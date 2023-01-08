@@ -31,3 +31,4 @@ typings/
 /app/server/config/repositories.json
 /app/server/config/user.json
 /app/server/database.sqlite
+/app/server/build/

@@ -42,7 +42,7 @@ export class RepositoryAccessor extends Database<IRepository> {
         return data;
     }
 
-    async delete(id: number): Promise<boolean> {
+    async delete(): Promise<boolean> {
         console.log('Config File RepositoryAccessor delete not available');
         return false;
     }

@@ -25,11 +25,13 @@ export class EntityContainer {
         this.entities = [];
     }
 
-    public fetch<T extends typeof Entity<any>>(entity: T): InstanceType<T>[] {
-        return this.entities.filter(e => e instanceof entity) as InstanceType<T>[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public fetch<T extends Entity>(entity: new (...args: any[]) => T): T[] {
+        return this.entities.filter(e => e instanceof entity) as T[];
     }
 
-    public find<T extends typeof Entity<any>>(entity: T, id: number): InstanceType<T> | undefined {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public find<T extends Entity>(entity: new (...args: any[]) => T, id: number): T | undefined {
         return this.fetch(entity).find(e => e.id === id);
     }
 }
