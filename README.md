@@ -21,3 +21,15 @@ Create endpoints to manage your runners.
 - Docker Compose
 - NodeJS
 - PNPM
+
+### Installation
+
+```bash
+pnpm install
+```
+
+### Run development configuration
+
+```bash
+pnpm run dev
+```

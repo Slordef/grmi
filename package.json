@@ -1,0 +1,57 @@
+{
+  "name": "grmi",
+  "version": "0.1.0",
+  "description": "Github Runners Manager Instance",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "cy:dev": "concurrently --kill-others \"pnpm run dev\" \"cypress open\"",
+    "dev": "pnpm run -r dev",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Slordef/grmi.git"
+  },
+  "keywords": [
+    "grmi",
+    "github",
+    "action",
+    "runner",
+    "manager",
+    "interface"
+  ],
+  "author": "Slordef",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Slordef/grmi/issues"
+  },
+  "homepage": "https://github.com/Slordef/grmi#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.0",
+    "@commitlint/config-conventional": "^17.4.0",
+    "@types/chai": "^4.3.4",
+    "@types/chai-http": "^4.2.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.11.18",
+    "@types/sinon": "^10.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "commitlint": "^17.4.0",
+    "concurrently": "^7.6.0",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.6.0",
+    "husky": "^8.0.3",
+    "mocha": "^10.2.0",
+    "prettier": "^2.8.1",
+    "sinon": "^15.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "cypress": "^12.3.0",
+    "zod": "^3.20.2"
+  }
+}
