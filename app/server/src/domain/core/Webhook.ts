@@ -21,4 +21,6 @@ export class Webhook {
         }
         return true;
     }
+
+    // check secret with https://www.npmjs.com/package/verify-github-webhook-secret?activeTab=readme
 }

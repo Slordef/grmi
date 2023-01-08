@@ -5,7 +5,7 @@ import { EventController } from './EventController';
 import { Controllers } from './Controllers';
 import { EntityContainer } from './EntityContainer';
 
-export type AdapterInstance = { [K in keyof Adapter]: (...args: Parameters<Adapter[K]>) => (ReturnType<Adapter[K]>[]) };
+export type AdapterInstance = { [K in keyof Adapter]: (...args: Parameters<Adapter[K]>) => ReturnType<Adapter[K]> };
 export type AdapterUseCases = { [K in keyof Adapter]?: Adapter[K] }
 export type AdapterParameters = Parameters<Adapter[keyof Adapter]>;
 
@@ -59,8 +59,9 @@ export class Core {
     }
 
     private registerUseCase<T extends keyof Adapter>(useCase: T, method: Adapter[T]) {
-        if (!this.useCase[useCase]) {
+        if (!(useCase in this.useCase)) {
             this.useCase[useCase] = method;
+            return;
         }
         throw new Error('Use case already registered.');
     }

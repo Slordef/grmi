@@ -25,7 +25,7 @@ export class EndpointWebhookController extends Controller {
     }
 
     public async fetchRunnerToken(repo: string, owner: string, token: string): Promise<string> {
-        const responses = await Promise.all(this.adapter.fetch(
+        const response = await this.adapter.fetch(
             `https://api.github.com/repos/${owner}/${repo}/actions/runners/registration-token`,
             {
                 method: 'POST',
@@ -35,11 +35,10 @@ export class EndpointWebhookController extends Controller {
                     'X-Github-Api-Version': '2022-11-28'
                 }
             }
-        ));
-        if (!responses.length) {
+        );
+        if (!response) {
             throw new Error('No response from github');
         }
-        const response = responses[0];
         if (response.status !== 201) {
             throw new Error('Failed to register runner');
         }

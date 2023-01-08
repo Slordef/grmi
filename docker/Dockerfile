@@ -18,7 +18,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     docker-compose \
     python3 \
     python3-pip \
-    python3-setuptools
+    python3-setuptools \
+    python3-venv
+
+RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+RUN . ~/.nvm/nvm.sh && nvm install 17.9.0
+RUN python3 -m pip install pipx
 
 RUN mkdir -p /home/runner
 WORKDIR /home/runner

@@ -19,7 +19,9 @@ export class RunnerManager {
         name: string,
         labels: string[],
     ): void {
-        this.runnerContainers.push(new RunnerContainer(id, url, token, name, labels));
+        const runner = new RunnerContainer(id, url, token, name, labels);
+        runner.manager = this;
+        this.runnerContainers.push(runner);
     }
 
     removeRunningContainer(runner: RunnerContainer): void {

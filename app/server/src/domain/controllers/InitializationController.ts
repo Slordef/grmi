@@ -7,16 +7,16 @@ export class InitializationController extends Controller {
 
     async execute(): Promise<void> {
         const UserDatabases = this.adapter.databaseUser();
-        if (UserDatabases.length <= 0) throw new Error('No database found');
-        UserDatabases[0].list().then((res) => {
+        if (!UserDatabases) throw new Error('No database found');
+        UserDatabases.list().then((res) => {
             res.forEach((user) => {
                 this.entityContainer.add(new UserEntity(user));
             });
         });
 
         const RepositoryDatabases = this.adapter.databaseRepository();
-        if (RepositoryDatabases.length <= 0) throw new Error('No database found');
-        RepositoryDatabases[0].list().then((res) => {
+        if (!RepositoryDatabases) throw new Error('No database found');
+        RepositoryDatabases.list().then((res) => {
             res.forEach((repository) => {
                 this.entityContainer.add(new RepositoryEntity(repository));
             });
