@@ -45,17 +45,17 @@ export class Core {
         this.receiveEvent('EventInitialization');
     }
 
-    async initPlugins() {
+    receiveEvent(event: EventController | string) {
+        this.controllers.trigger(event);
+    }
+
+    private async initPlugins() {
         for (const plugin of this.plugins) {
             await plugin.install({
                 register: this.registerUseCase.bind(this),
                 gateway: this.gateway
             });
         }
-    }
-
-    receiveEvent(event: EventController | string) {
-        this.controllers.trigger(event);
     }
 
     private registerUseCase<T extends keyof Adapter>(useCase: T, method: Adapter[T]) {

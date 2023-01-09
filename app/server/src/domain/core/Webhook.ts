@@ -1,12 +1,11 @@
-import { IRepository } from '../interface/IRepository';
 import { IWebhook } from '../interface/IWebhook';
 
+/**
+ * Performs operations on webhooks.
+ * Used with static methods.
+ * @class
+ */
 export class Webhook {
-    constructor(
-        public repository: IRepository
-    ) {
-    }
-
     /**
      * Check if the webhook is valid
      * @param {any} body
