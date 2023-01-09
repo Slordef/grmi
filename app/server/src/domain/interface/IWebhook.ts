@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { IRepository } from './IRepository';
 
 export const IWebhook = z.object({
     action: z.string(),
@@ -10,7 +9,15 @@ export const IWebhook = z.object({
         status: z.string(),
         labels: z.array(z.string()),
     }),
-    repository: IRepository,
+    repository: z.object({
+        id: z.number(),
+        name: z.string(),
+        owner: z.object({
+            id: z.number(),
+            login: z.string()
+        }),
+        html_url: z.string()
+    })
 });
 
 export type IWebhook = z.infer<typeof IWebhook>;

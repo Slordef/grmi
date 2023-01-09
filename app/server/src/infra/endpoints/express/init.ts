@@ -21,7 +21,7 @@ export class Express extends CorePlugin {
         app.post('/webhook', (req, res) => {
             const now = new Date().getTime();
             if (Webhook.check(req.body)) {
-                const endpoint = new Endpoint(now, req.url, req.method, req.body);
+                const endpoint = new Endpoint(now, req.url, req.method, req.body, req);
                 gateway.send(new EventEndpointWebhook(endpoint));
             }
             res.send('OK');

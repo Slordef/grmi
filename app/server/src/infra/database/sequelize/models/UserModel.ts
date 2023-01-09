@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../connection';
 import { IUser } from '../../../../domain/interface/IUser';
+import { RepositoryModel } from './RepositoryModel';
 
 export class UserModel extends Model<IUser> {
 }
@@ -22,4 +23,11 @@ UserModel.init({
 }, {
     sequelize,
     modelName: 'User',
+});
+
+UserModel.hasMany(RepositoryModel, {
+    foreignKey: 'userId',
+});
+RepositoryModel.belongsTo(UserModel, {
+    foreignKey: 'userId',
 });

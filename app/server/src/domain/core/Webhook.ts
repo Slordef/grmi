@@ -1,4 +1,5 @@
 import { IWebhook } from '../interface/IWebhook';
+import { verifySecret } from 'verify-github-webhook-secret';
 
 /**
  * Performs operations on webhooks.
@@ -21,5 +22,14 @@ export class Webhook {
         return true;
     }
 
-    // check secret with https://www.npmjs.com/package/verify-github-webhook-secret?activeTab=readme
+    /**
+     * Verify the webhook signature with the secret
+     * @param {IWebhook} body
+     * @param {string} hash
+     * @param {string} secret
+     * @returns {boolean}
+     */
+    static async verify(body: IWebhook, hash: string, secret: string): Promise<boolean> {
+        return await verifySecret(JSON.stringify(body), hash, secret);
+    }
 }

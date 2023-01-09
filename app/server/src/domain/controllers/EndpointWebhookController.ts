@@ -3,6 +3,7 @@ import { EventEndpointWebhook } from '../events/EventEndpointWebhook';
 import { RepositoryEntity } from '../entities/RepositoryEntity';
 import { IResponseGithubAPIRegisterRepositoryRunner } from '../interface/IResponseGithubAPI';
 import { UserEntity } from '../entities/UserEntity';
+import { Webhook } from '../core/Webhook';
 
 export class EndpointWebhookController extends Controller {
     public readonly type = EventEndpointWebhook;
@@ -16,7 +17,9 @@ export class EndpointWebhookController extends Controller {
         }
     }
 
-    public action(event: EventEndpointWebhook, repository: RepositoryEntity): void {
+    public async action(event: EventEndpointWebhook, repository: RepositoryEntity): Promise<void> {
+        const valid = await Webhook.verify(event.endpoint.body, event.endpoint.request, repository.get().secret ?? '');
+        if (!valid) return;
         switch (event.endpoint.body.action) {
         case 'queued':
             this.queued(event, repository).catch(e => console.log(e));

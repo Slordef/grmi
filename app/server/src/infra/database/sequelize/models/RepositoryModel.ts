@@ -19,6 +19,12 @@ RepositoryModel.init({
     },
     html_url: {
         type: DataTypes.STRING,
+    },
+    secret: {
+        type: DataTypes.STRING,
+    },
+    userId: {
+        type: DataTypes.INTEGER,
     }
 }, {
     sequelize,
