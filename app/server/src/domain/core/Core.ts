@@ -22,15 +22,9 @@ export class Core {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.adapter = new Proxy<any>({}, {
             get(target, prop) {
-                return (...args: AdapterParameters) => {
-                    const use = useCase[prop as keyof Adapter];
-                    if (use) {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        return use(...args);
-                    }
-                    throw new Error('Method not implemented.');
-                };
+                const use = useCase[prop as keyof Adapter];
+                if (!use) throw new Error('Method not implemented.');
+                return use;
             }
         });
         this.gateway = new Gateway(this);

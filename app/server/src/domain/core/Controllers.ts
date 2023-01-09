@@ -7,7 +7,7 @@ import { RunnerManager } from './RunnerManager';
 export class Controllers {
     private actions: Controller[] = [];
 
-    private manager: RunnerManager;
+    private readonly manager: RunnerManager;
 
     constructor(private core: Core) {
         this.manager = new RunnerManager();
