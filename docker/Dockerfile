@@ -9,14 +9,19 @@ ARG GITHUB_RUNNER_LABELS
 ENV DEBIAN_FRONTEND=noninteractive
 ENV GITHUB_RUNNER_VERSION=2.299.1
 ENV RUNNER_ALLOW_RUNASROOT=1
+ENV PATH="/root/.local/bin:/root/.poetry/bin:/root/.profile:$PATH"
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get update
+RUN apt-get install -y \
     curl \
     wget \
     git \
     docker.io \
     docker-compose \
-    python3 \
+    python3.10 \
     python3-pip \
     python3-setuptools \
     python3-venv

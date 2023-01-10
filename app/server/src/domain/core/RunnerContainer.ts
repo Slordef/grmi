@@ -4,6 +4,7 @@ import { RunnerManager } from './RunnerManager';
 export class RunnerContainer {
     public manager?: RunnerManager;
     private dockerID = '';
+    private removed = false;
 
     constructor(
         private readonly id: number,
@@ -33,8 +34,13 @@ export class RunnerContainer {
                 ]);
                 lg.stdout.on('data', (data) => {
                     console.log(data.toString());
+                    if (data.toString().includes('Removed .runner') || data.toString().includes('Removing .runner')) {
+                        this.remove();
+                    }
                     if (data.toString().includes('Exiting runner')) {
+                        if (this.removed) return this.remove();
                         this.complete();
+                        lg.kill();
                     }
                 });
                 lg.stderr.on('data', (data) => {
@@ -44,6 +50,7 @@ export class RunnerContainer {
         });
         ps.stderr.on('data', (data) => {
             console.log(data.toString());
+            this.remove();
         });
     }
 
@@ -62,11 +69,15 @@ export class RunnerContainer {
             }
             console.log(`stdout: ${stdout}`);
             if (stdout.toString().includes('Removed .runner') || stdout.toString().includes('Removing .runner')) {
-                spawn('docker', [
-                    'rm', '-f', this.dockerID
-                ]);
-                this.manager?.removeRunningContainer(this);
+                this.remove();
             }
         });
+    }
+
+    remove(): void {
+        spawn('docker', [
+            'rm', '-f', this.dockerID
+        ]);
+        this.manager?.removeRunningContainer(this);
     }
 }
