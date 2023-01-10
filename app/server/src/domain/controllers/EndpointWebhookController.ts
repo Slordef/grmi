@@ -11,20 +11,31 @@ export class EndpointWebhookController extends Controller {
     public execute(event: EventEndpointWebhook): void {
         const repository = this.entityContainer.find(RepositoryEntity, event.endpoint.body.repository.id);
         if (repository) {
-            this.action(event, repository);
+            this.action(event, repository)
+                .catch(e => console.log(e));
         } else {
             console.log('Repository not found');
         }
     }
 
     public async action(event: EventEndpointWebhook, repository: RepositoryEntity): Promise<void> {
-        const valid = await Webhook.verify(event.endpoint.body, event.endpoint.request, repository.get().secret ?? '');
-        if (!valid) return;
+        const valid = await Webhook.verify(
+            JSON.stringify(event.endpoint.body),
+            repository.get().secret ?? '',
+            event.endpoint.request.headers['x-hub-signature'] as string
+        ).catch(e => {
+            console.log(e);
+            return false;
+        });
+        if (!valid) {
+            console.log('Invalid signature');
+            return;
+        }
         switch (event.endpoint.body.action) {
         case 'queued':
-            this.queued(event, repository).catch(e => console.log(e));
-            break;
+            return this.queued(event, repository).catch(e => console.log(e));
         }
+        console.log('Unknown action');
     }
 
     public async fetchRunnerToken(repo: string, owner: string, token: string): Promise<string> {
@@ -46,14 +57,18 @@ export class EndpointWebhookController extends Controller {
             throw new Error('Failed to register runner');
         }
         const data = await response.body;
-        const result = IResponseGithubAPIRegisterRepositoryRunner.parse(data);
-        return result.token;
+        try {
+            const result = IResponseGithubAPIRegisterRepositoryRunner.parse(data);
+            return result.token;
+        } catch (e) {
+            throw new Error('Failed to parse response from github');
+        }
     }
 
     public async queued(event: EventEndpointWebhook, repository: RepositoryEntity): Promise<void> {
         console.log('queued');
 
-        const user = this.entityContainer.find(UserEntity, repository.get().owner.id);
+        const user = this.entityContainer.find(UserEntity, repository.get().userId);
         if (!user) {
             throw new Error('User not found');
         }
@@ -70,6 +85,7 @@ export class EndpointWebhookController extends Controller {
 
         const index = event.endpoint.body.workflow_job.id;
 
+        console.log(`Starting runner ${index}`);
         this.manager.createRunnerContainer(
             index,
             repository.get().html_url,

@@ -7,7 +7,7 @@ import { EventEndpointWebhook } from '../../../domain/events/EventEndpointWebhoo
 
 export class Express extends CorePlugin {
 
-    install({ gateway }: PluginRegister) {
+    async install({ gateway }: PluginRegister): Promise<void> {
         const app = express();
         const port = process.env.PORT || 3000;
 
@@ -21,6 +21,7 @@ export class Express extends CorePlugin {
         app.post('/webhook', (req, res) => {
             const now = new Date().getTime();
             if (Webhook.check(req.body)) {
+                console.log('Webhook checked');
                 const endpoint = new Endpoint(now, req.url, req.method, req.body, req);
                 gateway.send(new EventEndpointWebhook(endpoint));
             }

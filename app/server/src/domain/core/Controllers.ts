@@ -20,14 +20,19 @@ export class Controllers {
     }
 
     public trigger(event: EventController | string) {
+        let found = false;
         this.actions.forEach(action => {
             if (typeof event == 'string' && event == action.type || typeof action.type != 'string' && event instanceof action.type) {
                 try {
+                    found = true;
                     action.execute(event);
                 } catch (e) {
                     console.error(e);
                 }
             }
         });
+        if (!found) {
+            console.error(`Event ${event} not found.`);
+        }
     }
 }

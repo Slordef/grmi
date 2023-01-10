@@ -4,7 +4,7 @@ import { IFetchRequest, IFetchResponse } from '../../../domain/interface/IFetch'
 import axios from 'axios';
 
 export class AxiosRequest extends CorePlugin {
-    install({ register }: PluginRegister) {
+    async install({ register }: PluginRegister): Promise<void> {
         register('fetch', this.fetch);
     }
 

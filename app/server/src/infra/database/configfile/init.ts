@@ -4,7 +4,7 @@ import { UserAccessor } from './accessor/UserAccessor';
 import { RepositoryAccessor } from './accessor/RepositoryAccessor';
 
 export class ConfigFile extends CorePlugin {
-    install({ register }: PluginRegister) {
+    async install({ register }: PluginRegister): Promise<void> {
         register('databaseUser', () => new UserAccessor());
         register('databaseRepository', () => new RepositoryAccessor());
 

@@ -25,11 +25,12 @@ export class Webhook {
     /**
      * Verify the webhook signature with the secret
      * @param {IWebhook} body
-     * @param {string} hash
+     * @param {string} body
      * @param {string} secret
+     * @param {string} signature
      * @returns {boolean}
      */
-    static async verify(body: IWebhook, hash: string, secret: string): Promise<boolean> {
-        return await verifySecret(JSON.stringify(body), hash, secret);
+    static async verify(body: string, secret: string, signature: string): Promise<boolean> {
+        return await verifySecret(body, secret, signature);
     }
 }

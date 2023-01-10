@@ -6,6 +6,7 @@ export class InitializationController extends Controller {
     public readonly type = 'EventInitialization';
 
     async execute(): Promise<void> {
+        console.log('Initialization');
         const UserDatabases = this.adapter.databaseUser();
         if (!UserDatabases) throw new Error('No database found');
         UserDatabases.list().then((res) => {
