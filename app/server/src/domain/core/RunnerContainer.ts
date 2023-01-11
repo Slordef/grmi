@@ -4,7 +4,9 @@ import { RunnerManager } from './RunnerManager';
 export class RunnerContainer {
     public manager?: RunnerManager;
     private dockerID = '';
+    private running = false;
     private removed = false;
+    private timeout?: NodeJS.Timeout;
 
     constructor(
         private readonly id: number,
@@ -35,12 +37,14 @@ export class RunnerContainer {
                 lg.stdout.on('data', (data) => {
                     console.log(data.toString());
                     if (data.toString().includes('Removed .runner') || data.toString().includes('Removing .runner')) {
-                        this.remove();
+                        this.removed = true;
                     }
-                    if (data.toString().includes('Exiting runner')) {
+                    if (data.toString().includes('Running job:')) {
+                        this.running = true;
+                    }
+                    if (data.toString().includes('Exiting runner') && this.running) {
                         if (this.removed) return this.remove();
-                        this.complete();
-                        lg.kill();
+                        if (this.running) this.complete();
                     }
                 });
                 lg.stderr.on('data', (data) => {
@@ -48,9 +52,8 @@ export class RunnerContainer {
                 });
             }
         });
-        ps.stderr.on('data', (data) => {
-            console.log(data.toString());
-            this.remove();
+        this.timeout = setTimeout(() => {
+            if (!this.running) this.complete();
         });
     }
 
@@ -59,7 +62,7 @@ export class RunnerContainer {
     }
 
     complete(): void {
-        exec(`docker exec ${this.dockerID} bash -c "/home/runner/config.sh remove --token ${this.token}"`, (error, stdout, stderr) => {
+        exec(`docker exec ${this.dockerID} bash -c "/home/runner/actions-runner/config.sh remove --token ${this.token}"`, (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
                 return;
@@ -75,6 +78,7 @@ export class RunnerContainer {
     }
 
     remove(): void {
+        clearTimeout(this.timeout);
         spawn('docker', [
             'rm', '-f', this.dockerID
         ]);
