@@ -7,6 +7,7 @@ export const IRepository = z.object({
     html_url: z.string(),
     secret: z.string(),
     userId: z.number(),
+    labels: z.array(z.string()),
 });
 
 export type IRepository = z.infer<typeof IRepository>;

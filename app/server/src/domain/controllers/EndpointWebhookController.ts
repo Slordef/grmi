@@ -9,8 +9,15 @@ export class EndpointWebhookController extends Controller {
     public readonly type = EventEndpointWebhook;
 
     public execute(event: EventEndpointWebhook): void {
+        if (!event.endpoint.body.workflow_job.labels.includes('self-hosted')) {
+            console.log('Not self-hosted');
+            return;
+        }
         const repository = this.entityContainer.find(RepositoryEntity, event.endpoint.body.repository.id);
         if (repository) {
+            if (!repository.get().labels.every(label => event.endpoint.body.workflow_job.labels.includes(label))) {
+                return;
+            }
             this.action(event, repository)
                 .catch(e => console.log(e));
         } else {
