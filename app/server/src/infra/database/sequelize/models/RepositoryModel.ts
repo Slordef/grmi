@@ -25,6 +25,9 @@ RepositoryModel.init({
     },
     userId: {
         type: DataTypes.INTEGER,
+    },
+    labels: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
     }
 }, {
     sequelize,
