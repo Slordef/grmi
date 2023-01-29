@@ -11,4 +11,3 @@ export abstract class Entity<T extends { id: number } = any> {
         return this.data;
     }
 }
-

@@ -13,7 +13,7 @@ export class EndpointWebhookController extends Controller {
             console.log('Not self-hosted');
             return;
         }
-        const repository = this.entityContainer.find(RepositoryEntity, event.endpoint.body.repository.id);
+        const repository = this.entities.find(RepositoryEntity, event.endpoint.body.repository.id);
         if (repository) {
             if (!repository.get().labels.every(label => event.endpoint.body.workflow_job.labels.includes(label))) {
                 return;
@@ -75,7 +75,7 @@ export class EndpointWebhookController extends Controller {
     public async queued(event: EventEndpointWebhook, repository: RepositoryEntity): Promise<void> {
         console.log('queued');
 
-        const user = this.entityContainer.find(UserEntity, repository.get().userId);
+        const user = this.entities.find(UserEntity, repository.get().userId);
         if (!user) {
             throw new Error('User not found');
         }
@@ -98,7 +98,7 @@ export class EndpointWebhookController extends Controller {
             repository.get().html_url,
             token,
             `runner-${index}`,
-            ['tests']
+            repository.get().labels
         );
     }
 

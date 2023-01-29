@@ -11,7 +11,7 @@ export class InitializationController extends Controller {
         if (!UserDatabases) throw new Error('No database found');
         UserDatabases.list().then((res) => {
             res.forEach((user) => {
-                this.entityContainer.add(new UserEntity(user));
+                this.entities.add(new UserEntity(user));
             });
         });
 
@@ -19,7 +19,7 @@ export class InitializationController extends Controller {
         if (!RepositoryDatabases) throw new Error('No database found');
         RepositoryDatabases.list().then((res) => {
             res.forEach((repository) => {
-                this.entityContainer.add(new RepositoryEntity(repository));
+                this.entities.add(new RepositoryEntity(repository));
             });
         });
     }

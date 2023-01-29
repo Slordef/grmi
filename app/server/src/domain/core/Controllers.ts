@@ -1,5 +1,5 @@
 import { Core } from './Core';
-import { ControllerList } from '../controllers/ControllerList';
+import { ControllerList } from '../controllers';
 import { EventController } from './EventController';
 import { Controller } from './Controller';
 import { RunnerManager } from './RunnerManager';

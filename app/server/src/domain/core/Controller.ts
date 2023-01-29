@@ -15,13 +15,13 @@ export abstract class Controller {
     public abstract readonly type: (new (...args: never[]) => EventController) | string;
     public adapter: AdapterInstance;
     public gateway: Gateway;
-    public entityContainer: EntityContainer;
+    public entities: EntityContainer;
     public manager: RunnerManager;
 
     constructor(private register: RegisterController) {
         this.adapter = register.adapter;
         this.gateway = register.gateway;
-        this.entityContainer = register.entityContainer;
+        this.entities = register.entityContainer;
         this.manager = register.manager;
     }
 

@@ -18,6 +18,7 @@ export class RunnerContainer {
     }
 
     queue(): void {
+        console.log(`Starting runner ${this.url} ${this.token} ${this.name} ${this.labels.join(',')}`);
         const ps = spawn('docker', [
             'run', '-d',
             '-v', '/var/run/docker.sock:/var/run/docker.sock:rw',
@@ -29,7 +30,7 @@ export class RunnerContainer {
         ]);
         ps.stdout.on('data', (data) => {
             if (this.dockerID == '') {
-                this.dockerID = data.toString().slice(0, 3);
+                this.dockerID = data.toString().slice(0, 12);
                 console.log(this.dockerID);
                 const lg = spawn('docker', [
                     'logs', '-f', this.dockerID
@@ -52,9 +53,12 @@ export class RunnerContainer {
                 });
             }
         });
+        ps.stderr.on('data', (data) => {
+            this.remove();
+        });
         this.timeout = setTimeout(() => {
             if (!this.running) this.complete();
-        });
+        }, 1000 * 60 * 10);
     }
 
     in_progress(): void {
@@ -62,7 +66,7 @@ export class RunnerContainer {
     }
 
     complete(): void {
-        exec(`docker exec ${this.dockerID} bash -c "/home/runner/actions-runner/config.sh remove --token ${this.token}"`, (error, stdout, stderr) => {
+        exec(`docker exec ${this.dockerID} bash -c "./config.sh remove --token ${this.token}"`, (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
                 return;
