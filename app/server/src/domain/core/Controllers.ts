@@ -2,7 +2,7 @@ import { Core } from './Core';
 import { ControllerList } from '../controllers';
 import { EventController } from './EventController';
 import { Controller } from './Controller';
-import { RunnerManager } from './RunnerManager';
+import { RunnerManager } from '../runner/RunnerManager';
 
 export class Controllers {
     private actions: Controller[] = [];
@@ -10,7 +10,7 @@ export class Controllers {
     private readonly manager: RunnerManager;
 
     constructor(private core: Core) {
-        this.manager = new RunnerManager();
+        this.manager = new RunnerManager(this.core);
         this.actions = ControllerList().map(controller => new controller({
             adapter: this.core.adapter,
             gateway: this.core.gateway,

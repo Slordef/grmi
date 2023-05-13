@@ -5,9 +5,10 @@ ARG GITHUB_REPOSITORY_URL
 ARG GITHUB_RUNNER_TOKEN
 ARG GITHUB_RUNNER_NAME
 ARG GITHUB_RUNNER_LABELS
+ARG GITHUB_RUNNER_VERSION
+ARG GITHUB_RUNNER_CHECKSUMS
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV GITHUB_RUNNER_VERSION=2.301.1
 ENV RUNNER_ALLOW_RUNASROOT=1
 ENV PATH="/root/.local/bin:/root/.poetry/bin:/root/.profile:$PATH"
 
@@ -34,7 +35,7 @@ RUN mkdir -p /home/runner
 WORKDIR /home/runner
 
 RUN curl -o actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${GITHUB_RUNNER_VERSION}/actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz
-RUN echo "3ee9c3b83de642f919912e0594ee2601835518827da785d034c1163f8efdf907  actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz" | shasum -a 256 -c
+RUN echo "${GITHUB_RUNNER_CHECKSUMS}  actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz" | shasum -a 256 -c
 
 RUN tar xzf ./actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz
 

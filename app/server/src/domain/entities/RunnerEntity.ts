@@ -1,5 +1,5 @@
 import { Entity } from '../core/Entity';
-import { RunnerContainer } from '../core/RunnerContainer';
+import { RunnerContainer } from '../runner/RunnerContainer';
 
 export class RunnerEntity extends Entity {
     private _container: RunnerContainer | undefined;

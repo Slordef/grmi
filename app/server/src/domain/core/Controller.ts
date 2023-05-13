@@ -2,7 +2,7 @@ import { EventController } from './EventController';
 import { Gateway } from './Gateway';
 import { EntityContainer } from './EntityContainer';
 import { AdapterInstance } from './Core';
-import { RunnerManager } from './RunnerManager';
+import { RunnerManager } from '../runner/RunnerManager';
 
 export type RegisterController = {
     adapter: AdapterInstance,

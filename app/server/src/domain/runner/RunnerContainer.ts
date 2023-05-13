@@ -1,14 +1,12 @@
-import { exec, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import { RunnerManager } from './RunnerManager';
 
 export class RunnerContainer {
-    public manager?: RunnerManager;
     private dockerID = '';
-    private running = false;
-    private removed = false;
     private timeout?: NodeJS.Timeout;
 
     constructor(
+        private readonly manager: RunnerManager,
         private readonly id: number,
         private readonly url: string,
         private readonly token: string,
@@ -17,7 +15,8 @@ export class RunnerContainer {
     ) {
     }
 
-    queue(): void {
+    run(): void {
+        console.log(`${this.name} Start Runner`);
         console.log(`Starting runner ${this.url} ${this.token} ${this.name} ${this.labels.join(',')}`);
         const ps = spawn('docker', [
             'run', '-d',
@@ -31,58 +30,40 @@ export class RunnerContainer {
         ps.stdout.on('data', (data) => {
             if (this.dockerID == '') {
                 this.dockerID = data.toString().slice(0, 12);
-                console.log(this.dockerID);
                 const lg = spawn('docker', [
                     'logs', '-f', this.dockerID
                 ]);
                 lg.stdout.on('data', (data) => {
                     console.log(data.toString());
-                    if (data.toString().includes('Removed .runner') || data.toString().includes('Removing .runner')) {
-                        this.removed = true;
-                    }
-                    if (data.toString().includes('Running job:')) {
-                        this.running = true;
-                    }
-                    if (data.toString().includes('Exiting runner') && this.running) {
-                        if (this.removed) return this.remove();
-                        if (this.running) this.complete();
-                    }
                 });
                 lg.stderr.on('data', (data) => {
                     console.log(data.toString());
                 });
             }
         });
-        ps.stderr.on('data', (data) => {
+        ps.stderr.on('data', () => {
+            console.log(`${this.name} Error Runner`);
             this.remove();
         });
-        this.timeout = setTimeout(() => {
-            if (!this.running) this.complete();
-        }, 1000 * 60 * 10);
+        this.timeout = setInterval(this.check.bind(this), 1000 * 60 * 5);
     }
 
-    in_progress(): void {
-        // nothing to do
-    }
-
-    complete(): void {
-        exec(`docker exec ${this.dockerID} bash -c "./config.sh remove --token ${this.token}"`, (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                // err
-            }
-            console.log(`stdout: ${stdout}`);
-            if (stdout.toString().includes('Removed .runner') || stdout.toString().includes('Removing .runner')) {
+    check(): void {
+        const ps = spawn('docker', [
+            'ps', '-a',
+            '--filter', `id=${this.dockerID}`,
+            '|', 'grep', 'Exited'
+        ]);
+        ps.stdout.on('data', (data) => {
+            if (data.toString().includes('Exited')) {
                 this.remove();
             }
         });
     }
 
     remove(): void {
-        clearTimeout(this.timeout);
+        console.log(`${this.name} Remove Runner`);
+        clearInterval(this.timeout);
         spawn('docker', [
             'rm', '-f', this.dockerID
         ]);
