@@ -65,7 +65,7 @@ export class RunnerManager {
         const ps = spawn('docker', [
             'build',
             '-t', 'runner',
-            '-f', '../../docker/Dockerfile',
+            '-f', './docker/Dockerfile',
             '--build-arg', `GITHUB_RUNNER_VERSION=${version}`,
             '--build-arg', `GITHUB_RUNNER_CHECKSUMS=${checksums}`,
             '.'
