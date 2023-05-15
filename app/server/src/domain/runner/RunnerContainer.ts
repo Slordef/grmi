@@ -6,12 +6,12 @@ export class RunnerContainer {
     private timeout?: NodeJS.Timeout;
 
     constructor(
-        private readonly manager: RunnerManager,
-        private readonly id: number,
-        private readonly url: string,
-        private readonly token: string,
-        private readonly name: string,
-        private readonly labels: string[],
+		private readonly manager: RunnerManager,
+		private readonly id: number,
+		private readonly url: string,
+		private readonly token: string,
+		private readonly name: string,
+		private readonly labels: string[],
     ) {
     }
 
@@ -30,6 +30,10 @@ export class RunnerContainer {
         ps.stdout.on('data', (data) => {
             if (this.dockerID == '') {
                 this.dockerID = data.toString().slice(0, 12);
+                console.log(`${this.name} Start Runner ID: ${this.dockerID}`);
+                this.timeout = setInterval(() => {
+                    this.check();
+                }, 1000);
                 const lg = spawn('docker', [
                     'logs', '-f', this.dockerID
                 ]);
@@ -45,16 +49,17 @@ export class RunnerContainer {
             console.log(`${this.name} Error Runner`);
             this.remove();
         });
-        this.timeout = setInterval(this.check.bind(this), 1000 * 60 * 5);
     }
 
     check(): void {
+        console.log(`Check Runner ${this.dockerID}`);
         const ps = spawn('docker', [
             'ps', '-a',
             '--filter', `id=${this.dockerID}`,
             '|', 'grep', 'Exited'
-        ]);
+        ], { shell: true });
         ps.stdout.on('data', (data) => {
+            console.log(`Check Runner ${this.dockerID} : ${data.toString()}`);
             if (data.toString().includes('Exited')) {
                 this.remove();
             }
@@ -67,6 +72,6 @@ export class RunnerContainer {
         spawn('docker', [
             'rm', '-f', this.dockerID
         ]);
-        this.manager?.removeRunningContainer(this);
+        this.manager.removeRunningContainer(this);
     }
 }

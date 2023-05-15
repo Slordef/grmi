@@ -43,4 +43,4 @@ RUN ./bin/installdependencies.sh
 
 RUN rm -f ./actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz
 
-CMD ./config.sh --url $GITHUB_REPOSITORY_URL --token $GITHUB_RUNNER_TOKEN --name $GITHUB_RUNNER_NAME --labels $GITHUB_RUNNER_LABELS --ephemeral && ./run.sh && sleep infinity
+CMD ./config.sh --url $GITHUB_REPOSITORY_URL --token $GITHUB_RUNNER_TOKEN --name $GITHUB_RUNNER_NAME --labels $GITHUB_RUNNER_LABELS --ephemeral && ./run.sh

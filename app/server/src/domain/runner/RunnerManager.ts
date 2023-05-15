@@ -15,6 +15,9 @@ export class RunnerManager {
         this.interval = setInterval(() => {
             this.loop();
         }, 1000);
+        setTimeout(() => {
+            this.checkVersionRunner();
+        }, 1000);
         this.intervalCheckVersion = setInterval(() => {
             this.checkVersionRunner();
         }, 1000 * 60 * 60);
