@@ -10,4 +10,4 @@ export const Webhook = z.object({
     })
 });
 
-export type IWebhook = z.infer<typeof Webhook>;
+export type Webhook = z.infer<typeof Webhook>;

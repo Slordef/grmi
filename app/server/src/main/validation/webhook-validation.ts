@@ -1,4 +1,5 @@
 import { Validation } from '../../domain/usecases/validation';
+// TODO : Should be implemented via Adapter
 import { verifySecret } from 'verify-github-webhook-secret';
 
 export class WebhookValidation implements Validation {
