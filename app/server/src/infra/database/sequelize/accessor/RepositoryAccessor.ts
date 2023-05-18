@@ -1,13 +1,13 @@
-import { IRepository } from '../../../../domain/interface/IRepository';
+import { Repository } from '../../../../domain/database/params/repository';
 import { RepositoryModel } from '../models';
-import { Database } from '../../../../domain/core/Database';
+import { Database } from '../../../../domain/database/database';
 
-export class RepositoryAccessor extends Database<IRepository> {
-    async create(repository: IRepository): Promise<IRepository> {
+export class RepositoryAccessor extends Database<Repository> {
+    async create(repository: Repository): Promise<Repository> {
         return (await RepositoryModel.create(repository)).dataValues;
     }
 
-    async get(id: number): Promise<IRepository> {
+    async get(id: number): Promise<Repository> {
         const model = await RepositoryModel.findByPk(id);
         if (!model) {
             throw new Error('Repository not found');
@@ -15,7 +15,7 @@ export class RepositoryAccessor extends Database<IRepository> {
         return model.dataValues;
     }
 
-    async update(repository: IRepository): Promise<IRepository> {
+    async update(repository: Repository): Promise<Repository> {
         const model = await RepositoryModel.findByPk(repository.id);
         if (!model) {
             throw new Error('Repository not found');
@@ -28,7 +28,7 @@ export class RepositoryAccessor extends Database<IRepository> {
         return !!deleted;
     }
 
-    async list(): Promise<IRepository[]> {
+    async list(): Promise<Repository[]> {
         return (await RepositoryModel.findAll()).map((model) => model.dataValues);
     }
 }
