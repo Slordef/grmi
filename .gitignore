@@ -28,7 +28,8 @@ typings/
 .idea
 
 # AppConfig
-/app/server/config/repositories.json
-/app/server/config/user.json
+/config/repositories.json
+/config/user.json
 /app/server/database.sqlite
 /app/server/build/
+/build/

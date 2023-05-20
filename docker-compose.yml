@@ -1,7 +1,17 @@
 version: '3'
 
+volumes:
+  app_node_modules:
+
 services:
   app:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - ./:/app/
+      - app_node_modules:/app/node_modules/
+      - //var/run/docker.sock:/var/run/docker.sock:rw
+    privileged: true
+    ports:
+      - "9997:9997"

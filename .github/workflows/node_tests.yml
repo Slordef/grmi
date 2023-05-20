@@ -1,0 +1,39 @@
+name: Run tests nodejs
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  node-tests:
+    run-on: [ ubuntu-latest ]
+    defaults:
+      run:
+        working-directory: node
+
+    strategy:
+      matrix:
+        node-version: [ 17 ]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Use, Nodejs ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm run lint
+      - run: pnpm run build --if-present
+      - run: pnpm test
