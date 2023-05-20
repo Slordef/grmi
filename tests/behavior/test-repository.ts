@@ -1,4 +1,5 @@
-import { Database } from '../../app/server/src/domain/database/database';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Database } from '../../src/domain/database/database';
 
 export class TestRepository<T> implements Database<T> {
     constructor(

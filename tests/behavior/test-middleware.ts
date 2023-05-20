@@ -1,7 +1,7 @@
-import { badGateway, ok } from '../../app/server/src/main/helpers/http-helpers';
-import { HttpRequest } from '../../app/server/src/domain/protocols/http-request';
-import { HttpResponse } from '../../app/server/src/domain/protocols/http-response';
-import { Middleware } from '../../app/server/src/domain/controller/middleware';
+import { badGateway, ok } from '../../src/main/helpers/http-helpers';
+import { HttpRequest } from '../../src/domain/protocols/http-request';
+import { HttpResponse } from '../../src/domain/protocols/http-response';
+import { Middleware } from '../../src/domain/controller/middleware';
 
 export class TestMiddleware implements Middleware {
     constructor(private readonly mock = jest.fn(), private readonly resolve: boolean = true) {

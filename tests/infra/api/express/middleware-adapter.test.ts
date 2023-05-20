@@ -1,6 +1,4 @@
-import {
-    ExpressControllerAdapter
-} from '../../../../app/server/src/infra/api/express/adapter/express-controller-adapter';
+import { ExpressControllerAdapter } from '../../../../src/infra/api/express/adapter/express-controller-adapter';
 import { Request, Response } from 'express';
 import { TestController } from '../../../behavior/test-controller';
 

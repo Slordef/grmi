@@ -1,4 +1,5 @@
-import { Validation } from '../../app/server/src/domain/usecases/validation';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Validation } from '../../src/domain/usecases/validation';
 
 export class TestWebhookValidation implements Validation {
     constructor(
@@ -6,7 +7,7 @@ export class TestWebhookValidation implements Validation {
     ) {
     }
 
-    async validate(input: any): Promise<Error | undefined> {
+    async validate(input: unknown): Promise<Error | undefined> {
         return this.error();
     }
 }

@@ -1,4 +1,4 @@
-import { RunManager } from '../../app/server/src/domain/usecases/run-manager';
+import { RunManager } from '../../src/domain/usecases/run-manager';
 
 export class TestRunnerManager implements RunManager {
     constructor(

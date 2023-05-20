@@ -1,12 +1,13 @@
-import { WebhookController } from '../../../app/server/src/main/controller/webhook-controller';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { WebhookController } from '../../../src/main/controller/webhook-controller';
 import { TestRepository } from '../../behavior/test-repository';
 import { TestFetcher } from '../../behavior/test-fetcher';
 import { TestWebhookValidation } from '../../behavior/test-webhook.validation';
 import { TestRunnerManager } from '../../behavior/test-runner.manager';
-import { HttpRequest } from '../../../app/server/src/domain/protocols/http-request';
+import { HttpRequest } from '../../../src/domain/protocols/http-request';
 import { expect } from '@jest/globals';
-import { Repository } from '../../../app/server/src/domain/database/params/repository';
-import { User } from '../../../app/server/src/domain/database/params/user';
+import { Repository } from '../../../src/domain/database/params/repository';
+import { User } from '../../../src/domain/database/params/user';
 
 describe('WebhookController', () => {
     const repositoryMock = jest.fn(() => ({
@@ -43,10 +44,12 @@ describe('WebhookController', () => {
                 run_id: 1,
                 labels: ['test', 'self-hosted'],
                 workflow_name: 'test',
+                status: 'queued'
             },
             repository: {
                 id: 1,
                 name: 'test',
+                html_url: 'test',
                 owner: {
                     id: 1,
                     login: 'test',
@@ -78,10 +81,12 @@ describe('WebhookController', () => {
                     run_id: 1,
                     labels: ['test'],
                     workflow_name: 'test',
+                    status: 'queued'
                 },
                 repository: {
                     id: 1,
                     name: 'test',
+                    html_url: 'test',
                     owner: {
                         id: 1,
                         login: 'test',
@@ -126,10 +131,12 @@ describe('WebhookController', () => {
                     run_id: 1,
                     labels: ['test', 'self-hosted'],
                     workflow_name: 'test',
+                    status: 'queued'
                 },
                 repository: {
                     id: 1,
                     name: 'test',
+                    html_url: 'test',
                     owner: {
                         id: 1,
                         login: 'test',
@@ -177,7 +184,9 @@ describe('WebhookController', () => {
     it('should call handler and not work: Failed to parse response from github', async () => {
         fetchMock.mockImplementationOnce(() => ({
             status: 201,
-            body: {}
+            body: {
+                token: undefined
+            }
         }));
         const response = await webhookController.handle(req());
         expect(response.statusCode).toBe(200);

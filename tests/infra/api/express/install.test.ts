@@ -1,4 +1,4 @@
-import { ExpressPlugin } from '../../../../app/server/src/infra/api/express';
+import { ExpressPlugin } from '../../../../src/infra/api/express';
 import { mocking } from '../../../behavior/test-core-plugin-manager';
 
 describe('Express Install', () => {

@@ -1,9 +1,29 @@
-import { Core } from '../../app/server/src/main/core/core';
+import { Core } from '../../src/main/core/core';
 import { TestApiServerPlugin } from './test-api-server-plugin';
-import { TestCurlRequestPlugin } from './test-curl-request-plugin';
 import { TestDatabaseSystemPlugin } from './test-database-system-plugin';
 import { TestFetcherPlugin } from './test-fetcher-plugin';
+import { TestApiServer } from './test-api-server';
+import { TestRepository } from './test-repository';
+import { Repository } from '../../src/domain/database/params/repository';
+import { User } from '../../src/domain/database/params/user';
+import { TestFetcher } from './test-fetcher';
 
-export function createCore() {
-    return new Core(TestApiServerPlugin, TestCurlRequestPlugin, TestDatabaseSystemPlugin, TestFetcherPlugin);
+export function createCore(
+    testApiServer: TestApiServer = new TestApiServer(),
+    testRepository: TestRepository<Repository> = new TestRepository<Repository>(),
+    testUserRepository: TestRepository<User> = new TestRepository<User>(),
+    testFetcher: TestFetcher = new TestFetcher()
+) {
+    return new Core(
+        new TestApiServerPlugin(
+            testApiServer
+        ),
+        new TestDatabaseSystemPlugin(
+            testRepository,
+            testUserRepository
+        ),
+        new TestFetcherPlugin(
+            testFetcher
+        )
+    );
 }

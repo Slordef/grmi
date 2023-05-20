@@ -2,9 +2,9 @@ import { expect } from '@jest/globals';
 import { createCore } from '../behavior/create-core';
 
 describe('Core', () => {
+    const app = createCore();
     it('should be able to start', () => {
-        const app = createCore();
         expect(app).toBeDefined();
-        app.run();
+        expect(() => app.run()).not.toThrowError();
     });
 });

@@ -1,4 +1,4 @@
-import { CorePluginManager } from '../../app/server/src/main/core/core-plugin-manager';
+import { CorePluginManager } from '../../src/main/core/core-plugin-manager';
 
 class TestCorePluginManager extends CorePluginManager {
     constructor(private readonly mock = jest.fn()) {
