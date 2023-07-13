@@ -56,6 +56,13 @@ export class WebhookController implements Controller {
                     message: validWebhook.message
                 });
             }
+            // Check that labels are same as required
+            if (!data.workflow_job.labels.some(l => repository.labels.includes(l))) {
+                log('Labels not corresponding');
+                return ok({
+                    message: 'Labels not corresponding'
+                });
+            }
             // perform only on "queued" action
             if (data.action !== 'queued') {
                 log('Unknown action');
