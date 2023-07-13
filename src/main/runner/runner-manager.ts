@@ -27,7 +27,7 @@ export class RunnerManager implements RunManager {
         }, 1000);
         this.intervalCheckVersion = setInterval(() => {
             this.checkVersionRunner();
-        }, 1000 * 60 * 60);
+        }, 1000 * 60 * 60 * 24);
     }
 
     createRunnerContainer(id: number, url: string, token: string, name: string, labels: string[],): void {
