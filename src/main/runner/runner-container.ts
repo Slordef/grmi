@@ -40,7 +40,7 @@ export class RunnerContainer {
         const ps = spawn('docker', ['ps', '-a', '--filter', `id=${this.dockerID}`, '|', 'grep', 'Exited'], { shell: true });
         ps.stdout.on('data', (data) => {
             log(`Check Runner ${this.dockerID} : ${data.toString()}`);
-            if (data.toString().includes('Exited')) {
+            if (data.toString().includes('Exited') || data.toString().length == 0) {
                 this.remove();
             }
         });
