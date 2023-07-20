@@ -57,7 +57,7 @@ export class WebhookController implements Controller {
                 });
             }
             // Check that labels are same as required
-            if (!data.workflow_job.labels.every(l => repository.labels.includes(l))) {
+            if (!repository.labels.every(l => data.workflow_job.labels.includes(l))) {
                 log('Labels not corresponding');
                 return ok({
                     message: 'Labels not corresponding'
