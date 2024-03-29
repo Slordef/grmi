@@ -76,7 +76,7 @@ export class RunnerManager implements RunManager {
 
     public setupDockerImage(version: string, checksums: string): void {
         const ps = new Spawning('docker', [
-            'buildx build',
+            'build',
             '-t', 'runner',
             '-f', './docker/Dockerfile_v2',
             '--build-arg', `GITHUB_RUNNER_VERSION=${version}`,

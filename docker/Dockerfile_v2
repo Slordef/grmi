@@ -8,6 +8,7 @@ ARG GITHUB_RUNNER_LABELS
 ARG GITHUB_RUNNER_VERSION
 ARG GITHUB_RUNNER_CHECKSUMS
 
+ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_ALLOW_RUNASROOT=1
 ENV PATH="/root/.local/bin:/root/.poetry/bin:/root/.profile:$PATH"
@@ -22,7 +23,9 @@ RUN apk add --update --no-cache aspnetcore6-runtime
 RUN apk add --update --no-cache iptables
 RUN apk add --update --no-cache ip6tables
 RUN apk add --update --no-cache ca-certificates
-RUN apk add --update --no-cache python3
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN apk add --update --no-cache py3-pip
+RUN apk add --update --no-cache pipx
 RUN apk add --update --no-cache nodejs npm
 
 RUN mkdir -p /home/runner
@@ -36,7 +39,5 @@ RUN tar xzf ./actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz
 RUN apk add --update --no-cache krb5 zlib lttng-ust libressl icu icu-libs bash
 
 ENV LD_LIBRARY_PATH /usr/local/lib:/usr/lib:/lib
-
-RUN find / -name libicu*
 
 RUN rm -f ./actions-runner-linux-x64-${GITHUB_RUNNER_VERSION}.tar.gz

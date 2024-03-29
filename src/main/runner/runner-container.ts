@@ -43,7 +43,8 @@ export class RunnerContainer {
         const ns = new Spawning('docker', [
             'exec', this.dockerID, `sh -c "/home/runner/bin/Runner.Listener configure --url ${this.url} --token ${this.token} --name ${this.name} --labels ${this.labels.join(',')} --ephemeral && ./run.sh"`
         ], { shell: true });
-        ns.onString('Exited runner', this.remove.bind(this));
+        ns.stdout(log);
+        ns.onString('Exiting runner', this.remove.bind(this));
     }
 
     check(): void {
