@@ -12,27 +12,33 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_ALLOW_RUNASROOT=1
 ENV PATH="/root/.local/bin:/root/.poetry/bin:/root/.profile:$PATH"
 
-#RUN apt clean
 RUN apt update
-RUN apt install -y software-properties-common
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt update
-RUN apt install -y \
-    curl \
-    wget \
-    git \
-    docker.io \
-    docker-compose \
-    python3.10 \
-    python3-pip \
-    python3-setuptools \
-    python3-venv
-RUN apt clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt install -y --no-install-recommends apt-transport-https
+RUN apt install -y --no-install-recommends ca-certificates
+RUN apt install -y --no-install-recommends curl
+RUN apt install -y --no-install-recommends gnupg2
+RUN apt install -y --no-install-recommends software-properties-common
+RUN apt install -y --no-install-recommends lsb-release
+RUN apt install -y --no-install-recommends wget
+RUN apt install -y --no-install-recommends git
+RUN apt install -y --no-install-recommends python3
+RUN apt install -y --no-install-recommends python3-pip
+RUN apt install -y --no-install-recommends python3-setuptools
+RUN apt install -y --no-install-recommends python3-venv
+
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+RUN add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+RUN apt update && apt install -y --no-install-recommends docker-ce docker-ce-cli containerd.io docker-compose-plugin
+RUN docker compose
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 RUN . ~/.nvm/nvm.sh && nvm install 20.12.0
 RUN python3 -m pip install pipx
+
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /home/runner
 WORKDIR /home/runner

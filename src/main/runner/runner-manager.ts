@@ -1,9 +1,9 @@
 import { RunnerContainer } from './runner-container';
-import { spawn } from 'child_process';
 import { Fetcher } from '../../domain/request/fetcher';
 import { RunManager } from '../../domain/usecases/run-manager';
 import { log } from '../helpers/logger';
 import { ResponseGithubAPITakeLatestVersionOfRunner } from '../../domain/params/response-github-api';
+import { Spawning } from './spawning';
 
 export class RunnerManager implements RunManager {
     private maxRunner = 5;
@@ -75,13 +75,16 @@ export class RunnerManager implements RunManager {
     }
 
     public setupDockerImage(version: string, checksums: string): void {
-        const ps = spawn('docker', ['build', '-t', 'runner', '-f', './docker/Dockerfile', '--build-arg', `GITHUB_RUNNER_VERSION=${version}`, '--build-arg', `GITHUB_RUNNER_CHECKSUMS=${checksums}`, '.'], { shell: true });
-        ps.stdout.on('data', (data) => {
-            log(data.toString());
-        });
-        ps.stderr.on('data', (data) => {
-            log(data.toString());
-        });
+        const ps = new Spawning('docker', [
+            'buildx build',
+            '-t', 'runner',
+            '-f', './docker/Dockerfile_v2',
+            '--build-arg', `GITHUB_RUNNER_VERSION=${version}`,
+            '--build-arg', `GITHUB_RUNNER_CHECKSUMS=${checksums}`,
+            '.'
+        ], { shell: true });
+        ps.stdout(log);
+        ps.stderr(log);
     }
 
     private loop(): void {

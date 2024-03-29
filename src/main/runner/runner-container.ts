@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import { RunnerManager } from './runner-manager';
 import { log } from '../helpers/logger';
+import { Spawning } from './spawning';
 
 export class RunnerContainer {
     private dockerID = '';
@@ -12,27 +13,37 @@ export class RunnerContainer {
     run(): void {
         log(`${this.name} Start Runner`);
         log(`Starting runner ${this.url} ${this.token} ${this.name} ${this.labels.join(',')}`);
-        const ps = spawn('docker', ['run', '-d', '-v', '/var/run/docker.sock:/var/run/docker.sock:rw', '-e', `GITHUB_REPOSITORY_URL=${this.url}`, '-e', `GITHUB_RUNNER_TOKEN=${this.token}`, '-e', `GITHUB_RUNNER_NAME=${this.name}`, '-e', `GITHUB_RUNNER_LABELS=${this.labels.join(',')}`, 'runner'], { shell: true });
-        ps.stdout.on('data', (data) => {
+        const ps = new Spawning(
+            'docker',
+            [
+                'run', '-d',
+                '--name', this.name,
+                '--privileged',
+                '-e', `GITHUB_REPOSITORY_URL=${this.url}`,
+                '-e', `GITHUB_RUNNER_TOKEN=${this.token}`,
+                '-e', `GITHUB_RUNNER_NAME=${this.name}`,
+                '-e', `GITHUB_RUNNER_LABELS=${this.labels.join(',')}`,
+                'runner'
+            ],
+            { shell: true }
+        );
+        ps.stdout((data) => {
             if (this.dockerID == '') {
                 this.dockerID = data.toString().slice(0, 12);
-                log(`${this.name} Start Runner ID: ${this.dockerID}`);
-                this.timeout = setInterval(() => {
-                    this.check();
-                }, 1000);
-                const lg = spawn('docker', ['logs', '-f', this.dockerID], { shell: true });
-                lg.stdout.on('data', (data) => {
-                    log(data.toString());
-                });
-                lg.stderr.on('data', (data) => {
-                    log(data.toString());
-                });
+                this.startRunner();
             }
         });
-        ps.stderr.on('data', () => {
-            log(`${this.name} Error Runner`);
-            this.remove();
-        });
+    }
+
+    startRunner(): void {
+        log(`${this.name} Start Runner ID: ${this.dockerID}`);
+        this.timeout = setInterval(() => {
+            this.check();
+        }, 1000);
+        const ns = new Spawning('docker', [
+            'exec', this.dockerID, `sh -c "/home/runner/bin/Runner.Listener configure --url ${this.url} --token ${this.token} --name ${this.name} --labels ${this.labels.join(',')} --ephemeral && ./run.sh"`
+        ], { shell: true });
+        ns.onString('Exited runner', this.remove.bind(this));
     }
 
     check(): void {
