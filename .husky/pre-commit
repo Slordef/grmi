@@ -1,4 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# npm test should be run before commit
+export FILES_PATTERN='\.ts$'
+# shellcheck disable=SC2155
+export FILES_JS=$(git diff --diff-filter=d --staged --name-only HEAD | grep $FILES_PATTERN)
+
+if [ -z "$FILES_JS" ]; then
+  exit 0
+fi
+
+echo "Running Linter"
+pnpm run lint -- $FILES_JS
+
