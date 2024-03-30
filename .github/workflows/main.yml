@@ -1,0 +1,10 @@
+name: Main tests workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  main-node-tests:
+    uses: ./.github/actions/node-tests.yml

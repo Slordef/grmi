@@ -1,0 +1,11 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  pull-request-node-tests:
+    uses: ./.github/workflows/node-tests.yml

@@ -1,8 +1,6 @@
 name: Run tests nodejs
 
 on:
-  pull_request:
-    types: [ opened, reopened, synchronize ]
   workflow_dispatch:
   workflow_call:
 
