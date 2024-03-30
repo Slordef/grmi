@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 17 ]
+        node-version: [ 20 ]
 
     steps:
       - uses: actions/checkout@v3
@@ -31,7 +31,14 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: pnpm-lock.yaml
 
-      - run: pnpm install --frozen-lockfile --ignore-scripts
-      - run: pnpm run lint
-      - run: pnpm run build --if-present
-      - run: pnpm test
+      - name: Install
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Linter
+        run: pnpm run lint
+
+      - name: Build
+        run: pnpm run build --if-present
+
+      - name: Test
+        run: pnpm test
