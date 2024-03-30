@@ -29,6 +29,6 @@ typings/
 
 # AppConfig
 /config/
-/app/server/database.sqlite
-/app/server/build/
+/app-docker/server/database.sqlite
+/app-docker/server/build/
 /build/

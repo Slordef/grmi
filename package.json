@@ -4,7 +4,6 @@
   "description": "Github Runners Manager Instance",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install --omit=dev",
     "start": "node ./build/main/index.js",
     "test": "jest --config=jest.config.js",
     "test:dev": "jest --watch --config=jest.config.js",
