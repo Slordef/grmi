@@ -7,4 +7,4 @@ on:
 
 jobs:
   main-node-tests:
-    uses: ./.github/actions/node-tests.yml
+    uses: ./.github/workflows/node-tests.yml
