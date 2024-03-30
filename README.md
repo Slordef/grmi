@@ -22,7 +22,7 @@ ensuring they are active when needed and cleaned up after use.
 You can create multiple configurations for different repositories.\
 Configuration files should be named `user.json` and `repositories.json`.\
 Example configurations are available in the `config` directory:
-[user.json](config/user.json) and [repositories.json](config/repositories.json)\
+[user.json](examples/user.json) and [repositories.json](examples/repositories.json)\
 Notice that the `repositories.json` file should contain an array of objects and `user.json` should contain a single object.
 2. **Start GRMI**: Run the following command to start the GRMI service:
 ```bash
