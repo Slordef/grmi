@@ -20,16 +20,16 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
       - name: Use, Nodejs ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
           cache-dependency-path: pnpm-lock.yaml
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
 
       - name: Install
         run: pnpm install --frozen-lockfile --ignore-scripts
