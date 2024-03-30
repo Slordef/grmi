@@ -4,35 +4,35 @@ import { Controller } from '../../../domain/controller/controller';
 import { ExpressControllerAdapter } from './adapter/express-controller-adapter';
 import { ExpressMiddlewareAdapater } from './adapter/express-middleware-adapater';
 import { log } from '../../../main/helpers/logger';
+import { env } from '../../../main/config';
 
 export class ExpressApiServer implements ApiServer {
-    private app: Express;
-    private port: string;
+  private app: Express;
+  private port: string;
 
-    constructor() {
-        this.app = express();
-        this.port = process.env.PORT || '3000';
+  constructor() {
+    this.app = express();
+    this.port = env.PORT;
 
-        this.app.use(express.json());
+    this.app.use(express.json());
+  }
 
-    }
+  start(): Promise<void> {
+    this.app.all('*', (req, res) => {
+      log(req);
+      res.send('App is running');
+    });
 
-    start(): Promise<void> {
-        this.app.all('*', (req, res) => {
-            log(req);
-            res.send('App is running');
-        });
+    this.app.listen(this.port, () => {
+      log(`Server is running on port ${this.port}`);
+    });
 
-        this.app.listen(this.port, () => {
-            log(`Server is running on port ${this.port}`);
-        });
+    return Promise.resolve(undefined);
+  }
 
-        return Promise.resolve(undefined);
-    }
-
-    route(controller: Controller): void {
-        const adapter = new ExpressControllerAdapter(controller);
-        const middlewares = controller.middlewares.map(m => new ExpressMiddlewareAdapater(m).handle);
-        this.app[controller.method](controller.path, ...middlewares, adapter.handle);
-    }
+  route(controller: Controller): void {
+    const adapter = new ExpressControllerAdapter(controller);
+    const middlewares = controller.middlewares.map((m) => new ExpressMiddlewareAdapater(m).handle);
+    this.app[controller.method](controller.path, ...middlewares, adapter.handle);
+  }
 }
