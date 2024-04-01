@@ -7,6 +7,7 @@ import { HashComparer } from '../usecases/cryptography/hash-comparer';
 import { TokenGenerator } from '../usecases/token/token-generator';
 import { TokenVerifier } from '../usecases/token/token-verifier';
 import { RunManager } from '../usecases/runner/run-manager';
+import { ConfigRepository } from '../usecases/repository/config-repository';
 
 export interface UseCases {
   Test: () => string;
@@ -18,5 +19,6 @@ export interface UseCases {
   Fetcher: Fetcher;
   UserRepository: UserRepository;
   RepositoryRepository: RepositoryRepository;
+  ConfigRepository: ConfigRepository;
   RunManager: RunManager;
 }

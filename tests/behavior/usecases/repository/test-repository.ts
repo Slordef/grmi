@@ -1,8 +1,8 @@
 import { UserRepository } from '../../../../src/domain/usecases/repository/user-repository';
-import { User } from '../../../../src/domain/params/user';
+import { User } from '../../../../src/domain/models/user';
 import { jest } from '@jest/globals';
 import { RepositoryRepository } from '../../../../src/domain/usecases/repository/repository-repository';
-import { Repository } from '../../../../src/domain/params/repository';
+import { Repository } from '../../../../src/domain/models/repository';
 
 export class TestUserRepository implements UserRepository {
   constructor(private readonly mock: jest.Mock) {}
