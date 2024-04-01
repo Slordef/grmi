@@ -1,10 +1,10 @@
-import { ApiServer } from '../../../domain/usecases/api-server';
+import { ApiServer } from '../../../domain/usecases/api-server/api-server';
 import express, { Express } from 'express';
-import { Controller } from '../../../domain/controller/controller';
 import { ExpressControllerAdapter } from './adapter/express-controller-adapter';
-import { ExpressMiddlewareAdapater } from './adapter/express-middleware-adapater';
+import { ExpressMiddlewareAdapter } from './adapter/express-middleware-adapter';
 import { log } from '../../../main/helpers/logger';
 import { env } from '../../../main/config';
+import { AppRoute } from '../../../domain/route/app-route';
 
 export class ExpressApiServer implements ApiServer {
   private app: Express;
@@ -30,9 +30,11 @@ export class ExpressApiServer implements ApiServer {
     return Promise.resolve(undefined);
   }
 
-  route(controller: Controller): void {
-    const adapter = new ExpressControllerAdapter(controller);
-    const middlewares = controller.middlewares.map((m) => new ExpressMiddlewareAdapater(m).handle);
-    this.app[controller.method](controller.path, ...middlewares, adapter.handle);
+  route(route: AppRoute): void {
+    const adapter = new ExpressControllerAdapter(route.controller);
+    const middlewares = route.middlewares.map(
+      (middleware) => new ExpressMiddlewareAdapter(middleware).handle
+    );
+    this.app[route.method](route.path, ...middlewares, adapter.handle);
   }
 }

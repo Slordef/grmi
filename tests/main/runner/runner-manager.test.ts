@@ -1,10 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
+import { TestFetcher } from '../../behavior/usecases/fetcher/test-fetcher';
+import { expect, jest } from '@jest/globals';
+import { RunnerManager } from '../../../src/main/runner/runner-manager';
+import { FetcherOptions } from '../../../src/domain/usecases/fetcher/fetcher';
+import { FetchResponse } from '../../../src/domain/protocols/fetch-response';
+
 const mockSpawn = jest.fn((...args: any[]) => ({
   stdout: true,
   stderr: false,
   message: 'test'
 }));
-const mockFetch = jest.fn();
+const mockFetch: jest.Mock<(url: string, options?: FetcherOptions) => Promise<FetchResponse>> =
+  jest.fn((url: string, options?: FetcherOptions) =>
+    Promise.resolve({
+      status: 200,
+      body: {
+        url,
+        options
+      }
+    })
+  );
 const called = {
   spawn: () => {}
 };
@@ -26,20 +41,20 @@ jest.mock('child_process', () => ({
     };
   }
 }));
-import { expect } from '@jest/globals';
-import { RunnerManager } from '../../../src/main/runner/runner-manager';
-import { TestFetcher } from '../../behavior/test-fetcher';
 
 describe('RunnerManager', () => {
   it('should build docker runner', async () => {
-    mockFetch.mockReturnValueOnce({
-      body: {
-        body: `
-				https://github.com/actions/runner/releases/download/v1.111.1/actions-runner-linux-x64-1.111.1.tar.gz
-				<!-- BEGIN SHA linux-x64 -->123456789<!-- END SHA linux-x64 -->
-				`
-      }
-    });
+    mockFetch.mockReturnValueOnce(
+      Promise.resolve({
+        status: 200,
+        body: {
+          body: `
+            https://github.com/actions/runner/releases/download/v1.111.1/actions-runner-linux-x64-1.111.1.tar.gz
+            <!-- BEGIN SHA linux-x64 -->123456789<!-- END SHA linux-x64 -->
+				  `
+        }
+      })
+    );
     new RunnerManager(new TestFetcher(mockFetch));
     await new Promise<void>((r) => {
       called.spawn = r;
