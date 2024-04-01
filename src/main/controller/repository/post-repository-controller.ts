@@ -13,11 +13,23 @@ export class PostRepositoryController extends Handler {
     if (httpRequest.params.id === 'new') {
       const repoParse = PostRepository.safeParse(httpRequest.body);
       if (!repoParse.success) {
-        return badRequest(new Error('Invalid params'));
+        const content = await this.templateRenderer.render('repository', {
+          page: {
+            current: 'repositories'
+          },
+          error: 'Invalid params'
+        });
+        return template(content);
       }
       const repoExists = await this.repositoryRepository.get(parseInt(repoParse.data.id));
       if (repoExists) {
-        return badRequest(new Error('Repository already exists'));
+        const content = await this.templateRenderer.render('repository', {
+          page: {
+            current: 'repositories'
+          },
+          error: 'Repository already exists'
+        });
+        return template(content);
       }
       const repository = await this.repositoryRepository.create({
         ...repoParse.data,
@@ -25,12 +37,18 @@ export class PostRepositoryController extends Handler {
         userId: parseInt(repoParse.data.userId),
         labels: repoParse.data.labels.split(',').map((label) => label.trim())
       });
-      return redirect(`/repository/${repository.id}`);
+      return redirect(`/repository/${repository.id}?created=true`);
     }
     const id = parseInt(httpRequest.params.id);
 
     if (isNaN(id)) {
-      return badRequest(new Error('Invalid id'));
+      const content = await this.templateRenderer.render('repository', {
+        page: {
+          current: 'repositories'
+        },
+        error: 'Invalid id'
+      });
+      return template(content);
     }
 
     if (propInObject(httpRequest.body, '_method')) {
@@ -46,6 +64,7 @@ export class PostRepositoryController extends Handler {
       page: {
         current: 'users'
       },
+      success: 'Repository updated',
       repository,
       users
     });

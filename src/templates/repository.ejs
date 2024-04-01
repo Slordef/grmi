@@ -39,7 +39,7 @@
             <div class="input">
                 <select name="userId" id="userId">
                     <% if (!users.length) { %>
-                        <option value="" disabled>No users</option>
+                        <option value="" disabled selected>No users</option>
                     <% } %>
                     <% users.forEach(user => { %>
                         <option value="<%= user.id %>" <%= user.id === repository.userId ? 'selected' : '' %>><%= user.name %></option>
@@ -54,6 +54,16 @@
         <div class="form-group">
             <button type="submit">Save</button>
         </div>
+        <% if (typeof(error) !== 'undefined') { %>
+            <div class="form-group">
+                <p class="error"><%= error %></p>
+            </div>
+        <% } %>
+        <% if (typeof(success) !== 'undefined') { %>
+            <div class="form-group">
+                <p class="success"><%= success %></p>
+            </div>
+        <% } %>
     </form>
 
     <form method="post" enctype="application/x-www-form-urlencoded" id="delete">

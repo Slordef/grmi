@@ -4,6 +4,9 @@ import { UserRepository } from '../../../../domain/usecases/repository/user-repo
 
 export class UserFileRepository implements UserRepository {
   async import(): Promise<User[]> {
+    if (!(await FileManager.exists('users.json'))) {
+      return [];
+    }
     const data = await FileManager.read<User[]>('users.json').catch(() => []);
     return data?.filter((user: User) => User.safeParse(user).success);
   }
@@ -14,7 +17,7 @@ export class UserFileRepository implements UserRepository {
       throw new Error('User invalid');
     }
     if (!(await FileManager.exists('users.json'))) {
-      await FileManager.write('users.json', value);
+      await FileManager.write('users.json', [value]);
       return value;
     } else {
       const list = await this.import();

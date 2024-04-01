@@ -13,22 +13,40 @@ export class PostUserController extends Handler {
     if (httpRequest.params.id === 'new') {
       const userParse = PostUser.safeParse(httpRequest.body);
       if (!userParse.success) {
-        return badRequest(new Error('Invalid params'));
+        const content = await this.templateRenderer.render('user', {
+          page: {
+            current: 'users'
+          },
+          error: 'Invalid params'
+        });
+        return template(content);
       }
       const userExists = await this.userRepository.get(parseInt(userParse.data.id));
       if (userExists) {
-        return badRequest(new Error('User already exists'));
+        const content = await this.templateRenderer.render('user', {
+          page: {
+            current: 'users'
+          },
+          error: 'User already exists'
+        });
+        return template(content);
       }
       const user = await this.userRepository.create({
         ...userParse.data,
         id: parseInt(userParse.data.id)
       });
-      return redirect(`/user/${user.id}`);
+      return redirect(`/user/${user.id}?created=true`);
     }
     const id = parseInt(httpRequest.params.id);
 
     if (isNaN(id)) {
-      return badRequest(new Error('Invalid id'));
+      const content = await this.templateRenderer.render('user', {
+        page: {
+          current: 'users'
+        },
+        error: 'Invalid id'
+      });
+      return template(content);
     }
 
     if (propInObject(httpRequest.body, '_method')) {
@@ -44,6 +62,7 @@ export class PostUserController extends Handler {
       page: {
         current: 'users'
       },
+      success: 'User updated',
       user
     });
     return template(content);

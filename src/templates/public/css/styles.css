@@ -104,6 +104,23 @@ form .form-group {
     margin-bottom: 5px;
 }
 
+form .form-group .error {
+    border-left: 3px solid #dc3545;
+    background-color: #f8d7da;
+    color: #dc3545;
+    padding: 5px 10px;
+    margin: 5px 0;
+    font-size: 0.8em;
+}
+form .form-group .success {
+    border-left: 3px solid #28a745;
+    background-color: #d4edda;
+    color: #28a745;
+    padding: 5px 10px;
+    margin: 5px 0;
+    font-size: 0.8em;
+}
+
 main#home {
     padding: 20px;
 }

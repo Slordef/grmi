@@ -18,9 +18,11 @@ export class GetRepositoryController extends Handler {
         repository: {
           id: '',
           name: '',
-          login: '',
-          email: '',
-          token: ''
+          owner: '',
+          html_url: '',
+          secret: '',
+          userId: '',
+          labels: []
         },
         users
       });
@@ -32,6 +34,7 @@ export class GetRepositoryController extends Handler {
       page: {
         current: 'repositories'
       },
+      success: httpRequest.params.created === 'true' ? 'Repository created' : undefined,
       repository,
       users
     });

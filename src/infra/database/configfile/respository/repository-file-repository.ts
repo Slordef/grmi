@@ -4,6 +4,9 @@ import { RepositoryRepository } from '../../../../domain/usecases/repository/rep
 
 export class RepositoryFileRepository implements RepositoryRepository {
   async import(): Promise<Repository[]> {
+    if (!(await FileManager.exists('repositories.json'))) {
+      return [];
+    }
     const data = await FileManager.read<Repository[]>('repositories.json').catch(() => []);
     return data.filter((repo: Repository) => Repository.safeParse(repo).success);
   }

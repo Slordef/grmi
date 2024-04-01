@@ -5,6 +5,6 @@ import { env } from '../../../main/config';
 export class EjsTemplateEngine implements TemplateRenderer {
   async render(template: string, data: Record<string, unknown>): Promise<string> {
     const filepath = `${env.BASE_SRC}/templates/${template}.ejs`;
-    return ejs.renderFile(filepath, data);
+    return ejs.renderFile(filepath, data).catch(() => 'Error rendering template');
   }
 }

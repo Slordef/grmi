@@ -30,6 +30,7 @@ export class GetUserController extends Handler {
       page: {
         current: 'users'
       },
+      success: httpRequest.params.created === 'true' ? 'User created' : undefined,
       user
     });
     return template(content);
