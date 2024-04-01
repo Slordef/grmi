@@ -9,6 +9,9 @@ export class FileManager {
   }
 
   static async read<T>(filepath: string): Promise<T> {
+    if (!fs.existsSync(path.join(this.dirPath, filepath))) {
+      throw new Error('File not found');
+    }
     const content = fs.readFileSync(path.join(this.dirPath, filepath), { encoding: 'utf-8' });
     return JSON.parse(content);
   }

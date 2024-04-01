@@ -1,0 +1,14 @@
+<nav>
+    <div class="title">GRMI</div>
+    <ul>
+        <li>
+            <a class="<%= page.current === 'dashboard' ? 'current' : '' %>" href="/">Dashboard</a>
+        </li>
+        <li>
+            <a class="<%= page.current === 'users' ? 'current' : '' %>" href="/users">Users</a>
+        </li>
+        <li>
+            <a class="<%= page.current === 'repositories' ? 'current' : '' %>" href="/repositories">Repositories</a>
+        </li>
+    </ul>
+</nav>

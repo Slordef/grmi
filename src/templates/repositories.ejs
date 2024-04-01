@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head'); %>
+</head>
+<body>
+    <%- include('./partials/header'); %>
+
+    <main id="home">
+        <h1>Repositories</h1>
+        <a href="/repository/new" class="btn btn-primary">Create</a>
+
+        <table class="table-form">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>html_url</th>
+                <th>Secret</th>
+                <th>User</th>
+                <th>Labels</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for(const repository of repositories) { %>
+                <tr>
+                    <td><a href="/repository/<%= repository.id %>"><%= repository.id %></a></td>
+                    <td><a href="/repository/<%= repository.id %>"><%= repository.name %></a></td>
+                    <td><%= repository.owner %></td>
+                    <td><a href="<%= repository.html_url %>"><%= repository.html_url %></a></td>
+                    <td><%= repository.secret ? '***' : 'Not defined' %></td>
+                    <td><%= users.find(u => u.id === repository.userId)?.name %></td>
+                    <td><%= repository.labels.join(', ') %></td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </main>
+
+</body>
+</html>

@@ -8,11 +8,13 @@ import {
 } from './usecases/cryptography/test-cryptography-plugin';
 import { createTestFetcherPlugin } from './usecases/fetcher/test-fetcher-plugin';
 import {
+  createTestConfigRepositoryPlugin,
   createTestRepositoryRepositoryPlugin,
   createTestUserRepositoryPlugin
 } from './usecases/repository/test-repository-plugin';
 import { createTestRunManagerPlugin } from './usecases/runner/test-run-manager-plugin';
 import { AppCorePlugin } from '../../src/domain/core/app-core-plugin';
+import { createTestTemplateRendererPlugin } from './usecases/template-renderer/test-template-renderer-plugin';
 
 export function testCreateCore(mock: { [key: string]: { new (): AppCorePlugin } } = {}) {
   mock = Object.assign(
@@ -25,6 +27,8 @@ export function testCreateCore(mock: { [key: string]: { new (): AppCorePlugin } 
       testFetcherPlugin: createTestFetcherPlugin(),
       testUserRepositoryPlugin: createTestUserRepositoryPlugin(),
       testRepositoryRepositoryPlugin: createTestRepositoryRepositoryPlugin(),
+      testConfigRepositoryPlugin: createTestConfigRepositoryPlugin(),
+      testTemplateRendererPlugin: createTestTemplateRendererPlugin(),
       testRunManagerPlugin: createTestRunManagerPlugin()
     },
     mock

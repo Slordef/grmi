@@ -11,19 +11,19 @@ export class ConfigFileRepository implements ConfigRepository {
     await FileManager.write<Config>('config.json', value);
     return configParse.data;
   }
-  async get(): Promise<Config> {
-    const data = await FileManager.read<Config>('config.json');
+  async get(): Promise<Config | null> {
+    const data = await FileManager.read<Config>('config.json').catch(() => null);
     const configParse = Config.safeParse(data);
     if (!configParse.success) {
-      throw new Error('Config invalid');
+      return null;
     }
     return configParse.data;
   }
-  async update(value: Partial<Config>): Promise<Config> {
-    const data = await FileManager.read<Config>('config.json');
+  async update(value: Partial<Config>): Promise<Config | null> {
+    const data = await FileManager.read<Config>('config.json').catch(() => null);
     const configParse = Config.safeParse(data);
     if (!configParse.success) {
-      throw new Error('Config invalid');
+      return null;
     }
     const newValues = { ...configParse.data, ...value };
     await FileManager.write<Config>('config.json', newValues);
@@ -34,6 +34,11 @@ export class ConfigFileRepository implements ConfigRepository {
     return true;
   }
   async list(): Promise<Config[]> {
-    throw new Error('Method not implemented.');
+    const data = await FileManager.read<Config>('config.json').catch(() => null);
+    const configParse = Config.safeParse(data);
+    if (!configParse.success) {
+      return [];
+    }
+    return [configParse.data];
   }
 }

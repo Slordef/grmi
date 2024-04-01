@@ -13,7 +13,7 @@ export class RunnerManager implements RunManager {
   private intervalCheckVersion: NodeJS.Timer | undefined;
 
   constructor(private readonly fetcher: Fetcher) {
-    this.init();
+    // this.init(); // TODO: Uncomment this line
   }
 
   init(): void {

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('./partials/head'); %>
+</head>
+<body>
+<%- include('./partials/header'); %>
+
+<main id="home">
+    <h1>Users</h1>
+    <a href="/user/new" class="btn btn-primary">Create</a>
+
+    <table class="table-form">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Login</th>
+                <th>Email</th>
+                <th>Token</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% for(const user of users) { %>
+            <tr>
+                <td><a href="/user/<%= user.id %>"><%= user.id %></a></td>
+                <td><a href="/user/<%= user.id %>"><%= user.name %></a></td>
+                <td><%= user.login %></td>
+                <td><%= user.email %></td>
+                <td><%= user.token ? '***' : 'Not defined' %></td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>

@@ -67,5 +67,15 @@
     "node-fetch": "^3.3.2",
     "verify-github-webhook-secret": "^2.0.11",
     "zod": "^3.22.4"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node",
+    "ignore": [
+      "src/**/*.test.ts"
+    ]
   }
 }

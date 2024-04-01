@@ -8,6 +8,7 @@ import { TokenGenerator } from '../usecases/token/token-generator';
 import { TokenVerifier } from '../usecases/token/token-verifier';
 import { RunManager } from '../usecases/runner/run-manager';
 import { ConfigRepository } from '../usecases/repository/config-repository';
+import { TemplateRenderer } from '../usecases/template-renderer/template-renderer';
 
 export interface UseCases {
   Test: () => string;
@@ -20,5 +21,6 @@ export interface UseCases {
   UserRepository: UserRepository;
   RepositoryRepository: RepositoryRepository;
   ConfigRepository: ConfigRepository;
+  TemplateRenderer: TemplateRenderer;
   RunManager: RunManager;
 }

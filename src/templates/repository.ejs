@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('./partials/head'); %>
+</head>
+<body>
+<%- include('./partials/header'); %>
+
+<main id="home">
+    <h1>Repository</h1>
+
+    <div class="actions">
+        <a href="/repositories" class="button">Back</a>
+    </div>
+
+    <form method="post" enctype="application/x-www-form-urlencoded">
+        <div class="form-group">
+            <div class="label"><label for="id">ID</label></div>
+            <div class="input"><input type="text" id="id" name="id" required value="<%= repository.id %>"></div>
+        </div>
+        <div class="form-group">
+            <div class="label"><label for="name">Name</label></div>
+            <div class="input"><input type="text" id="name" name="name" required value="<%= repository.name %>"></div>
+        </div>
+        <div class="form-group">
+            <div class="label"><label for="owner">Owner</label></div>
+            <div class="input"><input type="text" id="owner" name="owner" required value="<%= repository.owner %>"></div>
+        </div>
+        <div class="form-group">
+            <div class="label"><label for="html_url">HTML Url</label></div>
+            <div class="input"><input type="text" id="html_url" name="html_url" required value="<%= repository.html_url %>"></div>
+        </div>
+        <div class="form-group">
+            <div class="label"><label for="secret">Secret</label></div>
+            <div class="input"><input type="password" id="secret" name="secret" required value="<%= repository.secret %>"></div>
+        </div>
+        <div class="form-group">
+            <div class="label"><label for="userId">User</label></div>
+            <div class="input">
+                <select name="userId" id="userId">
+                    <% if (!users.length) { %>
+                        <option value="" disabled>No users</option>
+                    <% } %>
+                    <% users.forEach(user => { %>
+                        <option value="<%= user.id %>" <%= user.id === repository.userId ? 'selected' : '' %>><%= user.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label"><label for="labels">Labels <i>(ex: "test, run, ...")</i></label></div>
+            <div class="input"><input type="text" id="labels" name="labels" required value="<%= repository.labels.join(', ') %>"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+
+    <form method="post" enctype="application/x-www-form-urlencoded" id="delete">
+        <input type="hidden" name="_method" value="delete">
+        <div class="form-group">
+            <button type="submit">Delete</button>
+        </div>
+    </form>
+    <script>
+      (function(){
+        const form = document.querySelector('form#delete');
+        form.onsubmit = function(e) {
+          if (!confirm('Are you sure?')) {
+            e.preventDefault();
+          }
+        }
+      })();
+    </script>
+</main>
+
+</body>
+</html>

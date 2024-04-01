@@ -1,11 +1,11 @@
-import { ExpressControllerAdapter } from '../../../../src/infra/api/express/adapter/express-controller-adapter';
 import { Request, Response } from 'express';
 import { TestAppHandler } from '../../../behavior/test-app-handler';
+import { ExpressMiddlewareAdapter } from '../../../../src/infra/api/express/adapter/express-middleware-adapter';
 
 describe('Express AppMiddleware Adapter', () => {
   const mock = jest.fn();
   const controller = new TestAppHandler(mock, true);
-  const adapter = new ExpressControllerAdapter(controller);
+  const adapter = new ExpressMiddlewareAdapter(controller);
 
   it('should create controller handler adapter', () => {
     expect(adapter).toBeDefined();
@@ -14,7 +14,7 @@ describe('Express AppMiddleware Adapter', () => {
 
   const req: Request = {
     body: {},
-    headers: {},
+    headers: { cookie: 'test=1;' },
     method: 'get',
     params: {},
     query: {}
@@ -29,9 +29,14 @@ describe('Express AppMiddleware Adapter', () => {
 
   it('should call AppMiddleware handle', async () => {
     await expect(adapter.handle(req, res, next)).resolves.toBeUndefined();
-    expect(mock).toBeCalled();
-    expect(mock).toBeCalledWith(req);
-    expect(res.status).toBeCalled();
-    expect(res.status).toBeCalledWith(200);
+    expect(mock).toHaveBeenCalled();
+    expect(mock).toHaveBeenCalledWith({
+      body: {},
+      headers: { cookie: 'test=1;' },
+      method: 'get',
+      params: {},
+      cookies: { test: '1' },
+      query: {}
+    });
   });
 });

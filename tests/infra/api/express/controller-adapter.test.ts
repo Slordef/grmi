@@ -14,7 +14,7 @@ describe('Express Handler Adapter', () => {
 
   const req: Request = {
     body: {},
-    headers: {},
+    headers: { cookie: 'test=1;' },
     method: 'get',
     params: {},
     query: {}
@@ -30,7 +30,14 @@ describe('Express Handler Adapter', () => {
   it('should call controller handle', async () => {
     await expect(adapter.handle(req, res, next)).resolves.toBeUndefined();
     expect(mock).toHaveBeenCalled();
-    expect(mock).toHaveBeenCalledWith(req);
+    expect(mock).toHaveBeenCalledWith({
+      body: {},
+      headers: { cookie: 'test=1;' },
+      method: 'get',
+      params: {},
+      cookies: { test: '1' },
+      query: {}
+    });
     expect(res.status).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
   });

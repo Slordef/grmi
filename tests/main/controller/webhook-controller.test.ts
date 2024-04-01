@@ -68,6 +68,7 @@ describe('WebhookController', () => {
     method: 'POST',
     params: {},
     query: {},
+    cookies: {},
     body: {
       action: 'queued',
       workflow_job: {
@@ -86,7 +87,8 @@ describe('WebhookController', () => {
           login: 'test'
         }
       }
-    }
+    },
+    user: undefined
   }));
 
   it('should call handler and work', async () => {
@@ -107,6 +109,7 @@ describe('WebhookController', () => {
       method: 'POST',
       params: {},
       query: {},
+      cookies: {},
       body: {
         action: 'queued',
         workflow_job: {
@@ -125,7 +128,8 @@ describe('WebhookController', () => {
             login: 'test'
           }
         }
-      }
+      },
+      user: undefined
     }));
     const response = await webhookController.handle(req());
     expect(response.statusCode).toBe(200);
@@ -159,6 +163,7 @@ describe('WebhookController', () => {
       method: 'POST',
       params: {},
       query: {},
+      cookies: {},
       body: {
         action: 'unknown',
         workflow_job: {
@@ -177,7 +182,8 @@ describe('WebhookController', () => {
             login: 'test'
           }
         }
-      }
+      },
+      user: undefined
     }));
     const response = await webhookController.handle(req());
     expect(response.statusCode).toBe(200);

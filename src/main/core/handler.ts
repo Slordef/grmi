@@ -11,6 +11,8 @@ import { TokenGenerator } from '../../domain/usecases/token/token-generator';
 import { TokenVerifier } from '../../domain/usecases/token/token-verifier';
 import { HttpRequest } from '../../domain/protocols/http-request';
 import { HttpResponse } from '../../domain/protocols/http-response';
+import { TemplateRenderer } from '../../domain/usecases/template-renderer/template-renderer';
+import { ConfigRepository } from '../../domain/usecases/repository/config-repository';
 
 export abstract class Handler implements AppHandler {
   protected apiServer: ApiServer;
@@ -22,6 +24,8 @@ export abstract class Handler implements AppHandler {
   protected runManager: RunManager;
   protected userRepository: UserRepository;
   protected repositoryRepository: RepositoryRepository;
+  protected configRepository: ConfigRepository;
+  protected templateRenderer: TemplateRenderer;
 
   constructor(core: AppCore) {
     this.apiServer = core.adapter('ApiServer');
@@ -33,6 +37,8 @@ export abstract class Handler implements AppHandler {
     this.runManager = core.adapter('RunManager');
     this.userRepository = core.adapter('UserRepository');
     this.repositoryRepository = core.adapter('RepositoryRepository');
+    this.configRepository = core.adapter('ConfigRepository');
+    this.templateRenderer = core.adapter('TemplateRenderer');
   }
 
   abstract handle(request: HttpRequest): Promise<HttpResponse>;

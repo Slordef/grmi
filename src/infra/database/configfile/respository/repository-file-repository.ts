@@ -4,13 +4,8 @@ import { RepositoryRepository } from '../../../../domain/usecases/repository/rep
 
 export class RepositoryFileRepository implements RepositoryRepository {
   async import(): Promise<Repository[]> {
-    const data = await FileManager.read<Repository[]>('repositories.json');
-    data.forEach((repo: Repository) => {
-      if (!Repository.parse(repo)) {
-        throw new Error('Repository invalid');
-      }
-    });
-    return data;
+    const data = await FileManager.read<Repository[]>('repositories.json').catch(() => []);
+    return data.filter((repo: Repository) => Repository.safeParse(repo).success);
   }
 
   async create(value: Repository): Promise<Repository> {
@@ -29,26 +24,26 @@ export class RepositoryFileRepository implements RepositoryRepository {
     }
   }
 
-  async get(id: number): Promise<Repository> {
+  async get(id: number): Promise<Repository | null> {
     const list = await this.import();
     const data = list.find((repository) => repository.id === id);
     const repositoryParse = Repository.safeParse(data);
     if (!repositoryParse.success) {
-      throw new Error('Repository invalid');
+      return null;
     }
     return repositoryParse.data;
   }
 
-  async update(repository: Partial<Repository>): Promise<Repository> {
+  async update(repository: Partial<Repository>): Promise<Repository | null> {
     const list = await this.import();
     const index = list.findIndex((d) => d.id === repository.id);
     if (index === -1) {
-      throw new Error('Repository not found');
+      return null;
     }
     const data = list[index];
     const repositoryParse = Repository.safeParse(data);
     if (!repositoryParse.success) {
-      throw new Error('Repository invalid');
+      return null;
     }
     list[index] = { ...data, ...repository };
     await FileManager.write('repositories.json', list);
@@ -59,7 +54,7 @@ export class RepositoryFileRepository implements RepositoryRepository {
     const list = await this.import();
     const index = list.findIndex((d) => d.id === id);
     if (index === -1) {
-      throw new Error('Repository not found');
+      return false;
     }
     list.splice(index, 1);
     await FileManager.write('repositories.json', list);

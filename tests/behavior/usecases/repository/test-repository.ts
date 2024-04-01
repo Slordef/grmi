@@ -3,6 +3,8 @@ import { User } from '../../../../src/domain/models/user';
 import { jest } from '@jest/globals';
 import { RepositoryRepository } from '../../../../src/domain/usecases/repository/repository-repository';
 import { Repository } from '../../../../src/domain/models/repository';
+import { ConfigRepository } from '../../../../src/domain/usecases/repository/config-repository';
+import { Config } from '../../../../src/domain/models/config';
 
 export class TestUserRepository implements UserRepository {
   constructor(private readonly mock: jest.Mock) {}
@@ -39,5 +41,24 @@ export class TestRepositoryRepository implements RepositoryRepository {
   }
   async list(): Promise<Repository[]> {
     return this.mock() as Repository[];
+  }
+}
+
+export class TestConfigRepository implements ConfigRepository {
+  constructor(private readonly mock: jest.Mock) {}
+  async create(value: Config): Promise<Config> {
+    return this.mock(value) as Config;
+  }
+  async get(id: number): Promise<Config> {
+    return this.mock(id) as Config;
+  }
+  async update(value: Config): Promise<Config> {
+    return this.mock(value) as Config;
+  }
+  async delete(id: number): Promise<boolean> {
+    return this.mock(id) as boolean;
+  }
+  async list(): Promise<Config[]> {
+    return this.mock() as Config[];
   }
 }

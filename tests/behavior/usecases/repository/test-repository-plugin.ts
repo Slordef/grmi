@@ -1,4 +1,8 @@
-import { TestRepositoryRepository, TestUserRepository } from './test-repository';
+import {
+  TestConfigRepository,
+  TestRepositoryRepository,
+  TestUserRepository
+} from './test-repository';
 import { AppCorePlugin } from '../../../../src/domain/core/app-core-plugin';
 import { AppCorePluginManager } from '../../../../src/domain/core/app-core-plugin-manager';
 import { jest } from '@jest/globals';
@@ -25,4 +29,16 @@ export function createTestRepositoryRepositoryPlugin(
     }
   }
   return TestRepositoryRepositoryPlugin;
+}
+
+export function createTestConfigRepositoryPlugin(
+  mock: jest.Mock = jest.fn(),
+  testConfigRepository = TestConfigRepository
+) {
+  class TestConfigRepositoryPlugin implements AppCorePlugin {
+    install(manager: AppCorePluginManager) {
+      manager.register('ConfigRepository', new testConfigRepository(mock));
+    }
+  }
+  return TestConfigRepositoryPlugin;
 }
