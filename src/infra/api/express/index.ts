@@ -1,10 +1,9 @@
-import { CorePlugin } from '../../../main/core/core-plugin';
-import { CorePluginManager } from '../../../main/core/core-plugin-manager';
+import { AppCorePluginManager } from '../../../domain/core/app-core-plugin-manager';
 import { ExpressApiServer } from './express-api-server';
-import { ApiServer } from '../../../domain/usecases/api-server';
+import { AppCorePlugin } from '../../../domain/core/app-core-plugin';
 
-export class ExpressPlugin extends CorePlugin {
-    install(manager: CorePluginManager): void {
-        manager.register<ApiServer>('ApiServer', new ExpressApiServer());
-    }
+export class ExpressPlugin implements AppCorePlugin {
+  install(manager: AppCorePluginManager): void {
+    manager.register('ApiServer', new ExpressApiServer());
+  }
 }

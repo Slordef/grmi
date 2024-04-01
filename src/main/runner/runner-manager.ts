@@ -1,9 +1,9 @@
 import { RunnerContainer } from './runner-container';
-import { Fetcher } from '../../domain/request/fetcher';
-import { RunManager } from '../../domain/usecases/run-manager';
+import { Fetcher } from '../../domain/usecases/fetcher/fetcher';
 import { log } from '../helpers/logger';
 import { ResponseGithubAPITakeLatestVersionOfRunner } from '../../domain/params/response-github-api';
 import { Spawning } from './spawning';
+import { RunManager } from '../../domain/usecases/runner/run-manager';
 
 export class RunnerManager implements RunManager {
   private maxRunner = 5;

@@ -1,11 +1,9 @@
-import { CorePlugin } from '../../../main/core/core-plugin';
-import { CorePluginManager } from '../../../main/core/core-plugin-manager';
+import { AppCorePluginManager } from '../../../domain/core/app-core-plugin-manager';
 import { AxiosFetcher } from './axios-fetcher';
-import { Fetcher } from '../../../domain/request/fetcher';
+import { AppCorePlugin } from '../../../domain/core/app-core-plugin';
 
-export class AxiosPlugin extends CorePlugin {
-    install(manager: CorePluginManager): void {
-        manager.register<Fetcher>('Fetcher', new AxiosFetcher());
-    }
-
+export class AxiosPlugin implements AppCorePlugin {
+  install(manager: AppCorePluginManager): void {
+    manager.register('Fetcher', new AxiosFetcher());
+  }
 }
