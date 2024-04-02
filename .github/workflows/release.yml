@@ -42,10 +42,11 @@ jobs:
       - name: Create a docker image
         env:
           NAME: grmi
+          TAG: ${{ github.event.release.tag_name }}
         run: |
-          docker build -t ${{ env.NAME }}:${{ github.event.release.tag }} -f ./docker/Dockerfile .
-          docker tag ${{ env.NAME }}:${{ github.event.release.tag }} ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ github.event.release.tag }}
+          docker build -t ${{ env.NAME }}:${{ env.TAG  }} -f ./docker/Dockerfile .
+          docker tag ${{ env.NAME }}:${{ env.TAG  }} ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
           echo ${{ secrets.DOCKER_TOKEN }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ github.event.release.tag }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:latest
 
