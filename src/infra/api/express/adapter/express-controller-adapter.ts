@@ -17,10 +17,16 @@ export class ExpressControllerAdapter {
     };
     const httpResponse = await this.controller.handle(httpRequest);
     if (httpResponse.statusCode === 200) {
+      res.status(httpResponse.statusCode);
+      if (httpResponse.cookies) {
+        httpResponse.cookies.forEach((cookie) => {
+          res.cookie(cookie.name, cookie.value, cookie.options);
+        });
+      }
       if (httpResponse.template) {
-        res.status(httpResponse.statusCode).send(httpResponse.body);
+        res.send(httpResponse.body);
       } else {
-        res.status(httpResponse.statusCode).json(httpResponse.body);
+        res.json(httpResponse.body);
       }
     } else if (httpResponse.statusCode === 302) {
       res.redirect(httpResponse.body as string);

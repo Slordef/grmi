@@ -45,9 +45,6 @@
         xhr.send(new URLSearchParams(data).toString());
         xhr.onload = function() {
           if (xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            // set token in cookie valid for 1 hour
-            document.cookie = `token=${response.token}; max-age=3600; path=/`;
             window.location.href = '/';
           } else {
             notify();

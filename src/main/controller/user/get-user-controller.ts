@@ -26,11 +26,15 @@ export class GetUserController extends Handler {
     }
     const id = parseInt(httpRequest.params.id);
     const user = await this.userRepository.get(id);
+    let success = undefined;
+    if (propInObject(httpRequest.query, 'created') && httpRequest.query.created === 'true') {
+      success = 'User created';
+    }
     const content = await this.templateRenderer.render('user', {
       page: {
         current: 'users'
       },
-      success: httpRequest.params.created === 'true' ? 'User created' : undefined,
+      success,
       user
     });
     return template(content);

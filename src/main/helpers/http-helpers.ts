@@ -1,9 +1,10 @@
 import { HttpResponse } from '../../domain/protocols/http-response';
 import { TemplateResponse } from '../../domain/protocols/template-response';
 
-export const ok = (data: unknown): HttpResponse => ({
+export const ok = (data: unknown, cookies?: HttpResponse['cookies']): HttpResponse => ({
   statusCode: 200,
-  body: data
+  body: data,
+  cookies
 });
 
 export const template = (template: TemplateResponse): HttpResponse => ({

@@ -22,7 +22,7 @@ export class ExpressApiServer implements ApiServer {
 
   start(): Promise<void> {
     this.app.all('*', (req, res) => {
-      log('all', req, 'all');
+      // log('all', req, 'all');
       res.send('App is running');
     });
 

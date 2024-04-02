@@ -3,6 +3,7 @@ import { HttpResponse } from '../../../domain/protocols/http-response';
 import { Handler } from '../../core/handler';
 import { ok, unauthorized } from '../../helpers/http-helpers';
 import { Login } from '../../../domain/params/login';
+import { env } from '../../config';
 
 export class PostLoginController extends Handler {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,6 +23,18 @@ export class PostLoginController extends Handler {
 
     const token = await this.tokenGenerator.generate(username, '1h');
 
-    return ok({ token });
+    return ok({ token }, [
+      {
+        name: 'token',
+        value: token,
+        options: {
+          httpOnly: true,
+          expires: new Date(Date.now() + 3600000),
+          maxAge: 3600000,
+          secure: env.COOKIE_SECURE,
+          sameSite: env.COOKIE_SAME_SITE
+        }
+      }
+    ]);
   }
 }

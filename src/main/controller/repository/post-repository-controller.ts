@@ -54,7 +54,7 @@ export class PostRepositoryController extends Handler {
     if (propInObject(httpRequest.body, '_method')) {
       if (httpRequest.body._method === 'delete') {
         await this.repositoryRepository.delete(id);
-        return redirect('/repositories');
+        return redirect('/repositories?deleted=true');
       }
     }
 

@@ -52,7 +52,7 @@ export class PostUserController extends Handler {
     if (propInObject(httpRequest.body, '_method')) {
       if (httpRequest.body._method === 'delete') {
         await this.userRepository.delete(id);
-        return redirect('/users');
+        return redirect('/users?deleted=true');
       }
     }
 

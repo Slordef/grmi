@@ -30,11 +30,15 @@ export class GetRepositoryController extends Handler {
     }
     const id = parseInt(httpRequest.params.id);
     const repository = await this.repositoryRepository.get(id);
+    let success = undefined;
+    if (propInObject(httpRequest.query, 'created') && httpRequest.query.created === 'true') {
+      success = 'Repository created';
+    }
     const content = await this.templateRenderer.render('repository', {
       page: {
         current: 'repositories'
       },
-      success: httpRequest.params.created === 'true' ? 'Repository created' : undefined,
+      success,
       repository,
       users
     });
