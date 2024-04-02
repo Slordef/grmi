@@ -45,8 +45,9 @@ jobs:
           TAG: ${{ github.event.release.tag_name }}
         run: |
           docker build -t ${{ env.NAME }}:${{ env.TAG  }} -f ./app-docker/build/Dockerfile .
-          docker tag ${{ env.NAME }}:${{ env.TAG  }} ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
           echo ${{ secrets.DOCKER_TOKEN }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker tag ${{ env.NAME }}:${{ env.TAG  }} ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
+          docker tag ${{ env.NAME }}:${{ env.TAG  }} ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:latest
 
