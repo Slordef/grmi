@@ -26,7 +26,7 @@ Example configurations are available in the `config` directory:
 Notice that the `repositories.json` file should contain an array of objects and `user.json` should contain a single object.
 2. **Start GRMI**: Run the following command to start the GRMI service:
 ```bash
-docker run --privileged -d -p 9997:9997 -v ./config:/app/config --name grmi slordefweb/grmi:latest
+docker run --privileged -d -p 9997:9997 -v .\config:/app/config --name grmi slordefweb/grmi:latest
 ```
 3. **Webhook Configuration**: Set up a webhook in your GitHub repository to point to the GRMI instance.
 The webhook should be triggered on the `repository` event.

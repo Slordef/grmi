@@ -11,6 +11,7 @@ COPY ./build ./build
 COPY ./docker ./docker
 
 RUN npm install --omit=dev --ignore-scripts
+RUN npm rebuild bcrypt
 
 ENTRYPOINT ["./process.sh"]
 CMD ["npm", "start"]

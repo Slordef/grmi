@@ -8,11 +8,13 @@ import { AppRoute } from '../../../domain/route/app-route';
 
 export class ExpressApiServer implements ApiServer {
   private app: Express;
-  private port: string;
+  private port: number;
+  private host: string;
 
   constructor() {
     this.app = express();
-    this.port = env.PORT;
+    this.port = parseInt(env.PORT);
+    this.host = env.HOST;
 
     this.app.use(express.json());
   }
@@ -23,8 +25,8 @@ export class ExpressApiServer implements ApiServer {
       res.send('App is running');
     });
 
-    this.app.listen(this.port, () => {
-      log(`Server is running on port ${this.port}`);
+    this.app.listen(this.port, this.host, () => {
+      log(`Server is running on ${this.host}:${this.port}`);
     });
 
     return Promise.resolve(undefined);
