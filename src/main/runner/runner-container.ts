@@ -88,7 +88,7 @@ export class RunnerContainer {
   remove(): void {
     log(`${this.name} Remove Runner`);
     clearInterval(this.timeout);
-    new Spawning('docker', ['rm', '-f', this.dockerID], { shell: true });
+    new Spawning('docker', ['rm', '-f', '-v', this.dockerID], { shell: true });
     this.manager.removeRunningContainer(this);
   }
 }
