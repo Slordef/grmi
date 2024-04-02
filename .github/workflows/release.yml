@@ -44,7 +44,7 @@ jobs:
           NAME: grmi
           TAG: ${{ github.event.release.tag_name }}
         run: |
-          docker build -t ${{ env.NAME }}:${{ env.TAG  }} -f ./docker/Dockerfile .
+          docker build -t ${{ env.NAME }}:${{ env.TAG  }} -f ./app-docker/build/Dockerfile .
           docker tag ${{ env.NAME }}:${{ env.TAG  }} ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
           echo ${{ secrets.DOCKER_TOKEN }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.NAME }}:${{ env.TAG  }}
