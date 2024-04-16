@@ -62,8 +62,8 @@ devDependencies:
     specifier: ^7.6.0
     version: 7.6.0(eslint@8.57.0)(typescript@5.4.4)
   commitlint:
-    specifier: ^19.2.1
-    version: 19.2.1(@types/node@20.12.5)(typescript@5.4.4)
+    specifier: ^19.2.2
+    version: 19.2.2(@types/node@20.12.5)(typescript@5.4.4)
   concurrently:
     specifier: ^8.2.2
     version: 8.2.2
@@ -1828,8 +1828,8 @@ packages:
       delayed-stream: 1.0.0
     dev: false
 
-  /commitlint@19.2.1(@types/node@20.12.5)(typescript@5.4.4):
-    resolution: {integrity: sha512-avW7E38gbdbUK7NIi/7gfkaKwlw8tjXy2HlmEdBS9A9+HeoHV1o/i96Sc9qjX0rKyPzKEsLi6cP3Wt3xM0kjEA==}
+  /commitlint@19.2.2(@types/node@20.12.5)(typescript@5.4.4):
+    resolution: {integrity: sha512-Q4g9addkfQzdDW46v5ylp2g95RceIXOwO9AnH31twQGTOZfAL8GyPZ66ucmwenoJUgC2gb/EPLv9orWIGldXMQ==}
     engines: {node: '>=v18'}
     hasBin: true
     dependencies:
