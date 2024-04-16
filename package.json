@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/Slordef/grmi#readme",
   "devDependencies": {
-    "@commitlint/cli": "^19.2.1",
+    "@commitlint/cli": "^19.2.2",
     "@commitlint/config-conventional": "^19.1.0",
     "@jest/globals": "^29.7.0",
     "@types/bcrypt": "^5.0.2",
