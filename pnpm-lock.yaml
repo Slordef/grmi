@@ -64,8 +64,8 @@ importers:
         specifier: ^7.18.0
         version: 7.18.0(eslint@8.57.0)(typescript@5.7.3)
       commitlint:
-        specifier: ^19.5.0
-        version: 19.5.0(@types/node@22.13.1)(typescript@5.7.3)
+        specifier: ^19.7.1
+        version: 19.7.1(@types/node@22.13.1)(typescript@5.7.3)
       concurrently:
         specifier: ^9.1.0
         version: 9.1.0
@@ -935,8 +935,8 @@ packages:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
     engines: {node: '>= 0.8'}
 
-  commitlint@19.5.0:
-    resolution: {integrity: sha512-lCtwxgFulvMnCgBc8MVPlVMf+PNOqQSBhHpEnjV2JjEQEAhxjVDtC7IeuEtR+hHpGvHt6CwlLtm3uZNyEby5dQ==}
+  commitlint@19.7.1:
+    resolution: {integrity: sha512-iNWqXl/A1WN8qd9JehqUpzbOxczNBE1nzBiYE33TkHeTptq7Cvg5U4j8PpvO92Nxganv6o/20IO3omP5N5M7/A==}
     engines: {node: '>=v18'}
     hasBin: true
 
@@ -3803,7 +3803,7 @@ snapshots:
     dependencies:
       delayed-stream: 1.0.0
 
-  commitlint@19.5.0(@types/node@22.13.1)(typescript@5.7.3):
+  commitlint@19.7.1(@types/node@22.13.1)(typescript@5.7.3):
     dependencies:
       '@commitlint/cli': 19.7.1(@types/node@22.13.1)(typescript@5.7.3)
       '@commitlint/types': 19.5.0
