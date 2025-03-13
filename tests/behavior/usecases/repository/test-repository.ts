@@ -1,6 +1,5 @@
 import { UserRepository } from '../../../../src/domain/usecases/repository/user-repository';
 import { User } from '../../../../src/domain/models/user';
-import { jest } from '@jest/globals';
 import { RepositoryRepository } from '../../../../src/domain/usecases/repository/repository-repository';
 import { Repository } from '../../../../src/domain/models/repository';
 

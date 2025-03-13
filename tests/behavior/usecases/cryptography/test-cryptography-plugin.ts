@@ -6,10 +6,9 @@ import {
   TestCryptographyTokenGenerator,
   TestCryptographyTokenVerifier
 } from './test-cryptography';
-import { jest } from '@jest/globals';
 
 export function createTestCryptographyHasherPlugin(
-  mock: jest.Mock<(plaintext: string) => Promise<string>> = jest.fn(),
+  mock: jest.Mock<Promise<string>, [plaintext: string]> = jest.fn(),
   cryptography = TestCryptographyHasher
 ): {
   new (): AppCorePlugin;
@@ -23,7 +22,7 @@ export function createTestCryptographyHasherPlugin(
 }
 
 export function createTestCryptographyHashComparerPlugin(
-  mock: jest.Mock<(plaintext: string, digest: string) => Promise<boolean>> = jest.fn(),
+  mock: jest.Mock<Promise<boolean>, [plaintext: string, digest: string]> = jest.fn(),
   cryptography = TestCryptographyHashComparer
 ): {
   new (): AppCorePlugin;
@@ -37,7 +36,7 @@ export function createTestCryptographyHashComparerPlugin(
 }
 
 export function createTestCryptographyTokenGeneratorPlugin(
-  mock: jest.Mock<(plaintext: string) => Promise<string>> = jest.fn(),
+  mock: jest.Mock<Promise<string>, [plaintext: string]> = jest.fn(),
   cryptography = TestCryptographyTokenGenerator
 ): {
   new (): AppCorePlugin;
@@ -51,7 +50,7 @@ export function createTestCryptographyTokenGeneratorPlugin(
 }
 
 export function createTestCryptographyTokenVerifierPlugin(
-  mock: jest.Mock<(ciphertext: string) => Promise<string | Record<string, unknown>>> = jest.fn(),
+  mock: jest.Mock<Promise<string | Record<string, unknown>>, [ciphertext: string]> = jest.fn(),
   cryptography = TestCryptographyTokenVerifier
 ): {
   new (): AppCorePlugin;

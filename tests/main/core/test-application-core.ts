@@ -1,4 +1,3 @@
-import { describe, test } from '@jest/globals';
 import { ApplicationCore } from '../../../src/main/core/application-core';
 import { AppCorePlugin } from '../../../src/domain/core/app-core-plugin';
 import { AppCorePluginManager } from '../../../src/domain/core/app-core-plugin-manager';

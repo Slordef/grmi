@@ -1,4 +1,3 @@
-import { expect } from '@jest/globals';
 import { testCreateCore } from '../behavior/test-create-core';
 
 describe('Core', () => {

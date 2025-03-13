@@ -1,4 +1,3 @@
-import { describe, test } from '@jest/globals';
 import { JwtAdapter } from '../../../../src/infra/crypto/jwt/jwt-adapter';
 
 describe('JwtAdapter', () => {

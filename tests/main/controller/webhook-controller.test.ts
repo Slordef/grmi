@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { WebhookController } from '../../../src/main/controller/webhook/webhook-controller';
-import { expect, jest } from '@jest/globals';
 import { testCreateCore } from '../../behavior/test-create-core';
 import {
   createTestRepositoryRepositoryPlugin,
@@ -8,13 +6,11 @@ import {
 } from '../../behavior/usecases/repository/test-repository-plugin';
 import { Validation } from '../../../src/domain/validation/validation';
 import { createTestFetcherPlugin } from '../../behavior/usecases/fetcher/test-fetcher-plugin';
-import { FetcherOptions } from '../../../src/domain/usecases/fetcher/fetcher';
 import { FetchResponse } from '../../../src/domain/protocols/fetch-response';
 import { createTestRunManagerPlugin } from '../../behavior/usecases/runner/test-run-manager-plugin';
+import { FetcherOptions } from '../../../src/domain/usecases/fetcher/fetcher';
 
-const validationMock: jest.Mock<() => Promise<Error | undefined>> = jest.fn(() =>
-  Promise.resolve(undefined)
-);
+const validationMock = jest.fn<Promise<Error | undefined>, []>(() => Promise.resolve(undefined));
 jest.mock('../../../src/main/validation/webhook-validation', () => {
   class WebhookValidation implements Validation {
     async validate(): Promise<Error | undefined> {
@@ -43,15 +39,16 @@ describe('WebhookController', () => {
     token: '123',
     login: ''
   }));
-  const fetchMock: jest.Mock<(url: string, options?: FetcherOptions) => Promise<FetchResponse>> =
-    jest.fn(async () => {
+  const fetchMock = jest.fn<Promise<FetchResponse>, [url: string, options?: FetcherOptions]>(
+    async () => {
       return {
         status: 201,
         body: {
           token: '123'
         }
       };
-    });
+    }
+  );
   const running = jest.fn();
 
   const core = testCreateCore({

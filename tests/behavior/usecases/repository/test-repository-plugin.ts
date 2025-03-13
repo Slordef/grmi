@@ -1,7 +1,6 @@
 import { TestRepositoryRepository, TestUserRepository } from './test-repository';
 import { AppCorePlugin } from '../../../../src/domain/core/app-core-plugin';
 import { AppCorePluginManager } from '../../../../src/domain/core/app-core-plugin-manager';
-import { jest } from '@jest/globals';
 
 export function createTestUserRepositoryPlugin(
   mock = jest.fn(),
@@ -16,7 +15,7 @@ export function createTestUserRepositoryPlugin(
 }
 
 export function createTestRepositoryRepositoryPlugin(
-  mock: jest.Mock = jest.fn(),
+  mock = jest.fn(),
   testRepositoryRepository = TestRepositoryRepository
 ) {
   class TestRepositoryRepositoryPlugin implements AppCorePlugin {

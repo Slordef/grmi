@@ -1,4 +1,3 @@
-import { describe, test } from '@jest/globals';
 import { BcryptAdapter } from '../../../../src/infra/crypto/bcrypt/bcrypt-adapter';
 
 describe('CryptoHash', () => {

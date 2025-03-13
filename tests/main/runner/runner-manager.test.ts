@@ -1,30 +1,37 @@
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
 import { TestFetcher } from '../../behavior/usecases/fetcher/test-fetcher';
-import { expect, jest } from '@jest/globals';
 import { RunnerManager } from '../../../src/main/runner/runner-manager';
 import { FetcherOptions } from '../../../src/domain/usecases/fetcher/fetcher';
 import { FetchResponse } from '../../../src/domain/protocols/fetch-response';
 
-const mockSpawn = jest.fn((...args: any[]) => ({
+const mockSpawn = jest.fn<
+  {
+    stdout: boolean;
+    stderr: boolean;
+    message: string;
+  },
+  unknown[]
+>(() => ({
   stdout: true,
   stderr: false,
   message: 'test'
 }));
-const mockFetch: jest.Mock<(url: string, options?: FetcherOptions) => Promise<FetchResponse>> =
-  jest.fn((url: string, options?: FetcherOptions) =>
-    Promise.resolve({
-      status: 200,
-      body: {
-        url,
-        options
-      }
-    })
-  );
+const mockFetch: jest.Mock<
+  Promise<FetchResponse>,
+  [url: string, options?: FetcherOptions]
+> = jest.fn((url: string, options?: FetcherOptions) =>
+  Promise.resolve({
+    status: 200,
+    body: {
+      url,
+      options
+    }
+  })
+);
 const called = {
   spawn: () => {}
 };
 jest.mock('child_process', () => ({
-  spawn: (...args: any[]) => {
+  spawn: (...args: unknown[]) => {
     const res = mockSpawn(...args);
     called.spawn();
     return {

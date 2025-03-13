@@ -1,4 +1,4 @@
 export interface FetchResponse {
-	status: number;
-	body: unknown;
+  status: number;
+  body: unknown;
 }
