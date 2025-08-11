@@ -67,6 +67,6 @@
     "jsonwebtoken": "^9.0.2",
     "node-fetch": "^3.3.2",
     "verify-github-webhook-secret": "^2.0.11",
-    "zod": "^3.25.67"
+    "zod": "^4.0.17"
   }
 }
